@@ -69,9 +69,6 @@
             </div>
         </div>
 
-
-    <!--SCRIPTS INCLUDES-->
-
     <!--CORE-->
     <script src="{{asset('js/jquery-3.4.0.min.js')}}"></script>
     <script src="{{asset('js/bootstrap.bundle.min.js')}}"></script>
@@ -82,5 +79,26 @@
     <!--Slick Carousel -->
     <script src="{{asset('js/vendors/carousel-slider.js')}}"></script>
     <script src="{{asset('js/scripts-init/carousel-slider.js')}}"></script>
+
+    <!--SweetAlert2 -->
+    <script src="{{asset('js/vendors/sweetalert2.all.js')}}"></script>
+    <!-- SweetAlert 2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="{{asset('js/scripts-init/sweet-alerts.min.js')}}"></script>
+    <script src="{{asset('js/scripts-init/sweet-alerts.js')}}"></script>
+
+    <!-- Script untuk SweetAlert -->
+    @if ($errors->has('error'))
+        <script>
+            Swal.fire({
+                icon: 'error',
+                title: 'Login gagal',
+                text: '{{ $errors->first('error') }}',
+                timer: 3000,                 // auto-close 5 detik
+                timerProgressBar: true,
+                showConfirmButton: false
+            });
+        </script>
+    @endif
     </body>
 </html>

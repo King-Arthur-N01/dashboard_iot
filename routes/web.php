@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\SensorDataController;
+use App\Http\Controllers\GardenDataController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
@@ -9,13 +11,24 @@ Route::get('/', function () {
 });
 
 Route::get('/dashboard', function () {
-    return view('layouts.home_page.view_home');
+    return view('layouts.dashboard_page.view_dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::get('/profile', [ProfileController::class, 'edit']);
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+Route::get('/register/garden', function () {
+    return view('layouts.garden_page.create_garden');
+})->name('page.register.garden');
+Route::post('/register/garden', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
+
+Route::get('/update/garden', function () {
+    return view('layouts.garden_page.update_garden');
+})->name('page.update.garden');
+
+Route::get('/view/sensor/report', [SensorDataController::class, 'summarySensorData'])->name('report.sensor.data');
 
 require __DIR__.'/auth.php';

@@ -665,28 +665,28 @@
                                         <h4 class="timeline-title">Something not important
                                             <div class="avatar-wrapper mt-2 avatar-wrapper-overlap">
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/1.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/1.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/2.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/2.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/3.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/3.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/4.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/4.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/5.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/5.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/6.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/6.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/7.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/7.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm">
-                                                    <div class="avatar-icon"><img src="../assets/images/avatars/8.jpg" alt=""></div>
+                                                    <div class="avatar-icon"><img src="{{asset('assets/images/icons/8.jpg')}}" alt=""></div>
                                                 </div>
                                                 <div class="avatar-icon-wrapper avatar-icon-sm avatar-icon-add">
                                                     <div class="avatar-icon"><i>+</i></div>

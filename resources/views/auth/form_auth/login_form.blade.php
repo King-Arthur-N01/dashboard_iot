@@ -2,7 +2,7 @@
 @csrf
     <div class="form-row">
         <div class="col-md-6">
-            <div class="position-relative form-group"><label for="exampleNik" class="">NIK</label><input name="nik" id="nik" placeholder="NIK" type="integer" class="form-control"></div>
+            <div class="position-relative form-group"><label for="exampleNik" class="">NIK</label><input name="nik" id="nik" placeholder="NIK" type="number" class="form-control"></div>
         </div>
         <div class="col-md-6">
             <div class="position-relative form-group"><label for="examplePassword" class="">Password</label><input name="password" id="password" placeholder="Password" type="password"class="form-control"></div>

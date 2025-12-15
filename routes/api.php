@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\SensorDataController;
+use App\Http\Controllers\GardenDataController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,5 +20,6 @@ Route::get('/user', function (Request $request) {
 |
 */
 
-
-Route::get('/sensor/latest', [SensorDataController::class, 'latestSensorData']);
+Route::get('/garden/data', [GardenDataController::class, 'latestSensorData']);
+Route::get('/sensor/data/latest', [SensorDataController::class, 'latestSensorData']);
+Route::get('/sensor/data/last/day', [SensorDataController::class, 'lastDaySensorData']);

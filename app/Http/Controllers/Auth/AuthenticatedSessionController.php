@@ -30,7 +30,13 @@ class AuthenticatedSessionController extends Controller
         $request->authenticate();
         $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
+        $check_if_garden_registered = DB::table('garden_data')->exists();
+
+        if (!$check_if_garden_registered) {
+            return redirect()->route('page.register.garden');
+        } else {
+            return redirect()->intended(route('dashboard', absolute: false));
+        }
     }
 
     /**

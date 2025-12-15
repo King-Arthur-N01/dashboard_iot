@@ -23,21 +23,63 @@ class SensorDataController extends Controller
         ]);
     }
 
-    public function summarySensorData(): JsonResponse
+    public function lastDaySensorData(): JsonResponse
     {
-        // $currenttime = Carbon::now('Asia/Jakarta');
+        $oneDayAgo = Carbon::now()->subDay();
 
-        $last_day = Carbon::now('Asia/Jakarta')->format('dd/mm/yyyy');
-        $data = SensorData::find('created_at')->where($last_day);
-        
+        $lastdaydata = SensorData::where('created_at', '>=', $oneDayAgo)->get();
+
+        $grouped = $lastdaydata->groupBy(function ($item) {
+            return $item->created_at
+                ->timezone('Asia/Jakarta')
+                ->format('Y-m-d H');
+        });
+
+        // Generate jam WIB
+        $start = $oneDayAgo->copy()->timezone('Asia/Jakarta')->startOfHour();
+        $end = Carbon::now('Asia/Jakarta')->startOfHour();
+
+        $hours = [];
+        while ($start <= $end) {
+            $hours[] = $start->format('Y-m-d H');
+            $start->addHour();
+        }
+
+        $data = [];
+        foreach ($hours as $hour) {
+            if (isset($grouped[$hour])) {
+                $c = $grouped[$hour];
+                $data[] = [
+                    'hour' => $hour,
+                    'avg_temp' => round($c->avg('temp'), 2),
+                    'avg_humi' => round($c->avg('humi'), 2),
+                    'avg_lumi' => round($c->avg('lumi'), 2),
+                    'avg_soil' => round($c->avg('soil'), 2),
+                    'avg_rain' => round($c->avg('rain'), 2),
+                    'count' => $c->count(),
+                ];
+            } else {
+                $data[] = [
+                    'hour' => $hour,
+                    'avg_temp' => null,
+                    'avg_humi' => null,
+                    'avg_lumi' => null,
+                    'avg_soil' => null,
+                    'avg_rain' => null,
+                    'count' => 0,
+                ];
+            }
+        }
 
         return response()->json([
-            'temperature' => $data->temp ?? 'N/A',
-            'humidity' => $data->humi ?? 'N/A',
-            'light' => $data->lumi ?? 'N/A',
-            'soil' => $data->soil ?? 'N/A',
-            'updated_at' => $data->created_at ?? now(),
+            'data' => $data,
+            'total_hours' => count($hours),
         ]);
+    }
+
+    public function summarySensorData()
+    {
+        return view('layouts.sensor_page.view_sensor');
     }
 
     /**

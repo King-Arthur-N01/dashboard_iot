@@ -13,10 +13,11 @@ return new class extends Migration
     {
         Schema::create('sensor_data', function (Blueprint $table) {
             $table->id();
-            $table->string('temp', 5)->nullable();
-            $table->string('humi', 5)->nullable();
-            $table->string('lumi', 5)->nullable();
-            $table->string('soil', 5)->nullable();
+            $table->float('temp', 5)->nullable();
+            $table->float('humi', 5)->nullable();
+            $table->float('lumi', 5)->nullable();
+            $table->float('soil', 5)->nullable();
+            $table->float('rain', 5)->nullable();
             $table->timestamps();
         });
     }

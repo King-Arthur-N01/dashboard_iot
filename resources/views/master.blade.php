@@ -165,7 +165,11 @@
                                                                     <img width="42" class="rounded-circle" src="{{asset('/assets/images/icons/avatar1.png')}}" alt="">
                                                                 </div>
                                                                 <div class="widget-content-left">
-                                                                    <div class="widget-heading"><a>{{ Auth::user()->name }}</a></div>
+                                                                    <div class="widget-heading">
+                                                                        @auth
+                                                                        <a>{{ Auth::user()->name }}</a>
+                                                                        @endauth
+                                                                    </div>
                                                                     <div class="widget-subheading opacity-8">A short profile description</div>
                                                                 </div>
                                                                 <div class="widget-content-right mr-2">
@@ -197,7 +201,9 @@
                                 </div>
                                 <div class="widget-content-left  ml-3 header-user-info">
                                     <div class="widget-heading">
+                                        @auth
                                         <a>{{ Auth::user()->name }}</a>
+                                        @endauth
                                     </div>
                                     <div class="widget-subheading">
                                         VP People Manager
@@ -258,26 +264,25 @@
                     <div class="app-sidebar__inner">
                         <ul class="vertical-nav-menu">
                             <li class="app-sidebar__heading">Menu</li>
-                            <li class="mm-active">
-                                <a href="#">
-                                    <i class="metismenu-icon pe-7s-rocket"></i>
-                                        Dashboards
-                                    <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
+                            <li>
+                                <a href="{{route('dashboard')}}">
+                                    <i class="metismenu-icon pe-7s-home"></i>
+                                    Dashboards
                                 </a>
-                                <ul>
-                                    <li>
-                                        <a href="{{route('dashboard')}}" class="mm-active">
-                                            <i class="metismenu-icon"></i>Home
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="commerce.html">
-                                            <i class="metismenu-icon"></i>Data
-                                        </a>
-                                    </li>
-                                </ul>
                             </li>
                             <li>
+                                <a href="{{ route('report.sensor.data') }}">
+                                    <i class="metismenu-icon  pe-7s-graph1"></i>
+                                    Statistic
+                                </a>
+                            </li>
+                            <li>
+                                <a href="">
+                                    <i class="metismenu-icon  pe-7s-date"></i>
+                                    Schedule
+                                </a>
+                            </li>
+                            {{-- <li>
                                 <a href="#">
                                     <i class="metismenu-icon pe-7s-browser"></i> Pages
                                     <i class="metismenu-state-icon pe-7s-angle-down caret-left"></i>
@@ -314,7 +319,7 @@
                                         </a>
                                     </li>
                                 </ul>
-                            </li>
+                            </li> --}}
                         </ul>
                     </div>
                 </div>
@@ -581,7 +586,7 @@
                                             </div>
                                         </div>
                                         <div class="widget-content-left mr-3">
-                                            <div class="widget-content-left"><img width="42" class="rounded" src="../assets/images/avatars/1.jpg" alt="" /></div>
+                                            <div class="widget-content-left"><img width="42" class="rounded" src=" {{asset('images/avatars/1.jpg')}}" alt=""/></div>
                                         </div>
                                         <div class="widget-content-left">
                                             <div class="widget-heading">Go grocery shopping</div>

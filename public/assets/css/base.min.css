@@ -2,6 +2,45 @@
     border-color: #3f6ad8
 }
 
+.garden {
+    background: #cfe8b4;
+    border-radius: 16px;
+    height: 360px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4b6b2f;
+    font-weight: 600;
+}
+
+.stat-card {
+    border-radius: 14px;
+    border: none;
+}
+
+.stat-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+}
+
+.custom-text{
+    font-size: 1rem
+}
+
+.image-header{
+    height: -webkit-fill-available;
+}
+
+.icon-img {
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
 .border-secondary {
     border-color: #6c757d
 }
@@ -14536,7 +14575,7 @@ body {
 }
 
 .btn-hover-shine {
-    position: relative
+    position: relative;
 }
 
 .btn-hover-shine:after {
@@ -15117,7 +15156,7 @@ body {
 }
 
 .btn-warning:hover {
-    color: #212529;
+    color: #fff;
     background-color: #eca909;
     border-color: #e0a008
 }
@@ -15175,7 +15214,7 @@ body {
 .btn-danger:not(:disabled):not(.disabled).active,.btn-danger:not(:disabled):not(.disabled):active,.show>.btn-danger.dropdown-toggle {
     color: #fff;
     background-color: #ad1e40;
-    border-color: #a31c3c
+    border-color: #a31c3c;
 }
 
 .btn-danger:not(:disabled):not(.disabled).active:focus,.btn-danger:not(:disabled):not(.disabled):active:focus,.show>.btn-danger.dropdown-toggle:focus {
@@ -33593,7 +33632,7 @@ button.toast-close-button {
     width: 100%;
     height: 100%;
     background-size: cover;
-    opacity: .4;
+    opacity: .6;
     z-index: 10
 }
 

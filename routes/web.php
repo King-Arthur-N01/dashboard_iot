@@ -2,8 +2,10 @@
 
 use App\Http\Controllers\SensorDataController;
 use App\Http\Controllers\GardenDataController;
+use App\Http\Controllers\RelayDataController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 
 Route::get('/', function () {
@@ -24,6 +26,7 @@ Route::get('/register/garden', function () {
     return view('layouts.garden_page.create_garden');
 })->name('page.register.garden');
 Route::post('/register/garden', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
+Route::get('/edit/garden', [GardenDataController::class, 'pageEditGardenData'])->name('edit.garden');
 
 Route::get('/update/garden', function () {
     return view('layouts.garden_page.update_garden');

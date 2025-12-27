@@ -6,6 +6,7 @@ use App\Models\SensorData;
 use App\Http\Requests\StoreSensorDataRequest;
 use App\Http\Requests\UpdateSensorDataRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Carbon\Carbon;
 
 class SensorDataController extends Controller
@@ -23,21 +24,31 @@ class SensorDataController extends Controller
         ]);
     }
 
+    public function errorSensorData(): JsonResponse
+    {
+        return response()->json([
+            'temperature' => 'Sensor Error',
+            'humidity' => 'Sensor Error',
+            'light' => 'Sensor Error',
+            'soil' => 'Sensor Error',
+            'updated_at' => now(),
+        ]);
+    }
+
     public function lastDaySensorData(): JsonResponse
     {
-        $oneDayAgo = Carbon::now()->subDay();
+        $from = Carbon::now()->subDay(); // UTC
+        $to   = Carbon::now();
 
-        $lastdaydata = SensorData::where('created_at', '>=', $oneDayAgo)->get();
+        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
 
-        $grouped = $lastdaydata->groupBy(function ($item) {
-            return $item->created_at
-                ->timezone('Asia/Jakarta')
-                ->format('Y-m-d H');
-        });
+        $grouped = $rows->groupBy(fn ($item) =>
+            $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d H')
+        );
 
-        // Generate jam WIB
-        $start = $oneDayAgo->copy()->timezone('Asia/Jakarta')->startOfHour();
-        $end = Carbon::now('Asia/Jakarta')->startOfHour();
+        // generate slot jam (WIB)
+        $start = $from->copy()->timezone('Asia/Jakarta')->startOfHour();
+        $end   = $to->copy()->timezone('Asia/Jakarta')->startOfHour();
 
         $hours = [];
         while ($start <= $end) {
@@ -47,33 +58,105 @@ class SensorDataController extends Controller
 
         $data = [];
         foreach ($hours as $hour) {
-            if (isset($grouped[$hour])) {
-                $c = $grouped[$hour];
-                $data[] = [
-                    'hour' => $hour,
-                    'avg_temp' => round($c->avg('temp'), 2),
-                    'avg_humi' => round($c->avg('humi'), 2),
-                    'avg_lumi' => round($c->avg('lumi'), 2),
-                    'avg_soil' => round($c->avg('soil'), 2),
-                    'avg_rain' => round($c->avg('rain'), 2),
-                    'count' => $c->count(),
-                ];
-            } else {
-                $data[] = [
-                    'hour' => $hour,
-                    'avg_temp' => null,
-                    'avg_humi' => null,
-                    'avg_lumi' => null,
-                    'avg_soil' => null,
-                    'avg_rain' => null,
-                    'count' => 0,
-                ];
-            }
+            $c = $grouped[$hour] ?? collect();
+
+            $data[] = [
+                'label'     => $hour,
+                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
+                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
+                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
+                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
+                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
+                'count'     => $c->count(),
+            ];
         }
 
         return response()->json([
-            'data' => $data,
-            'total_hours' => count($hours),
+            'range' => 'day',
+            'data'  => $data
+        ]);
+    }
+
+    public function lastWeekSensorData(): JsonResponse
+    {
+        $from = Carbon::now()->subDays(7);
+        $to   = Carbon::now();
+
+        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
+
+        $grouped = $rows->groupBy(fn ($item) =>
+            $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d')
+        );
+
+        // generate slot hari
+        $start = $from->copy()->timezone('Asia/Jakarta')->startOfDay();
+        $end   = $to->copy()->timezone('Asia/Jakarta')->startOfDay();
+
+        $days = [];
+        while ($start <= $end) {
+            $days[] = $start->format('Y-m-d');
+            $start->addDay();
+        }
+
+        $data = [];
+        foreach ($days as $day) {
+            $c = $grouped[$day] ?? collect();
+
+            $data[] = [
+                'label'     => $day,
+                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
+                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
+                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
+                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
+                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
+                'count'     => $c->count(),
+            ];
+        }
+
+        return response()->json([
+            'range' => 'week',
+            'data'  => $data
+        ]);
+    }
+
+    public function lastMonthSensorData(): JsonResponse
+    {
+        $from = Carbon::now()->subDays(30);
+        $to   = Carbon::now();
+
+        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
+
+        $grouped = $rows->groupBy(fn ($item) =>
+            $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d')
+        );
+
+        $start = $from->copy()->timezone('Asia/Jakarta')->startOfDay();
+        $end   = $to->copy()->timezone('Asia/Jakarta')->startOfDay();
+
+        $days = [];
+        while ($start <= $end) {
+            $days[] = $start->format('Y-m-d');
+            $start->addDay();
+        }
+
+        $data = [];
+        foreach ($days as $day) {
+            $c = $grouped[$day] ?? collect();
+
+            $data[] = [
+                'label'     => $day,
+                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
+                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
+                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
+                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
+                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
+                'count'     => $c->count(),
+            ];
+        }
+
+        return response()->json([
+            'range' => 'month',
+            'data'  => $data
         ]);
     }
 
@@ -85,10 +168,6 @@ class SensorDataController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.

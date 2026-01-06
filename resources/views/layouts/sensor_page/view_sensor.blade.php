@@ -6,30 +6,33 @@
     <div class="tabs-animation">
         <div class="main-card mb-3 card">
             <div class="card-body">
+
+            </div>
+            <div class="card-body">
                 <ul class="tabs-animated-shadow nav-justified tabs-animated nav">
                     <li class="nav-item">
-                        <a role="tab" class="nav-link active" id="tab-c1-0" data-toggle="tab" href="#tab-temperature">
+                        <a role="tab" class="nav-link active" data-toggle="tab" href="#tabTemperature">
                             <span class="nav-text">Tab Temperature</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-c1-1" data-toggle="tab" href="#tab-humidity">
+                        <a role="tab" class="nav-link" data-toggle="tab" href="#tabHumidity">
                             <span class="nav-text">Tab Humidity</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-c1-2" data-toggle="tab" href="#tab-luminescence">
+                        <a role="tab" class="nav-link" data-toggle="tab" href="#tabLuminescence">
                             <span class="nav-text">Tab Luminescence</span>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a role="tab" class="nav-link" id="tab-c1-3" data-toggle="tab" href="#tab-soilmoisture">
+                        <a role="tab" class="nav-link" data-toggle="tab" href="#tabSoilMoisture">
                             <span class="nav-text">Tab soilmoisture</span>
                         </a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div class="tab-pane active" id="tab-temperature" role="tabpanel">
+                    <div class="tab-pane active" id="tabTemperature" role="tabpanel">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-header-title">
                                 <h5 class="card-title">Temperature Summary</h5>
@@ -43,18 +46,18 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-temp-last-24h">
-                                    <div id="chart_temperature_24h"></div>
+                                    <div id="chartTemperature24h"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-temp-last-7d">
-                                    <div id="chart_temperature_7d"></div>
+                                    <div id="chartTemperature7d"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-temp-last-30d">
-                                    <div id="chart_temperature_30d"></div>
+                                    <div id="chartTemperature30d"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab-humidity" role="tabpanel">
+                    <div class="tab-pane" id="tabHumidity" role="tabpanel">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-header-title">
                                 <h5 class="card-title">Humidity Summary</h5>
@@ -68,18 +71,18 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-humi-last-24h">
-                                    <div id="chart_humidify_24h"></div>
+                                    <div id="chartHumidify24h"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-humi-last-7d">
-                                    <div id="chart_humidify_7d"></div>
+                                    <div id="chartHumidify7d"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-humi-last-30d">
-                                    <div id="chart_humidify_30d"></div>
+                                    <div id="chartHumidify30d"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab-luminescence" role="tabpanel">
+                    <div class="tab-pane" id="tabLuminescence" role="tabpanel">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-header-title">
                                 <h5 class="card-title">Luminescence Summary</h5>
@@ -93,18 +96,18 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-lumi-last-24h">
-                                    <div id="chart_luminescence_24h"></div>
+                                    <div id="chartLuminescence24h"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-lumi-last-7d">
-                                    <div id="chart_luminescence_7d"></div>
+                                    <div id="chartLuminescence7d"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-lumi-last-30d">
-                                    <div id="chart_luminescence_30d"></div>
+                                    <div id="chartLuminescence30d"></div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tab-soilmoisture" role="tabpanel">
+                    <div class="tab-pane" id="tabSoilMoisture" role="tabpanel">
                         <div class="card-header-tab card-header-tab-animation card-header">
                             <div class="card-header-title">
                                 <h5 class="card-title">Soilmoisture Summary</h5>
@@ -118,13 +121,13 @@
                         <div class="card-body">
                             <div class="tab-content">
                                 <div class="tab-pane fade show active" id="tab-soil-last-24h">
-                                    <div id="chart_soilmoisture_24h"></div>
+                                    <div id="chartSoilMoisture24h"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-soil-last-7d">
-                                    <div id="chart_soilmoisture_7d"></div>
+                                    <div id="chartSoilMoisture7d"></div>
                                 </div>
                                 <div class="tab-pane fade" id="tab-soil-last-30d">
-                                    <div id="chart_soilmoisture_30d"></div>
+                                    <div id="chartSoilMoisture30d"></div>
                                 </div>
                             </div>
                         </div>
@@ -143,6 +146,7 @@
 <script src="{{asset('js/scripts-init/charts/apex-series.js')}}"></script>
 <!--Moment js-->
 <script src="{{asset('js/vendors/moment.js')}}"></script>
+
 <script>
     const api = {
         day:   "{{ url('/api/sensor/data/last/day') }}",
@@ -212,7 +216,7 @@
     document.addEventListener("DOMContentLoaded", function () {
         // Temperature default → 24h
         renderSensorChart({
-            elementId: '#chart_temperature_24h',
+            elementId: '#chartTemperature24h',
             apiUrl: api.day,
             field: 'avg_temp',
             title: 'Temperature',
@@ -220,7 +224,7 @@
         });
         // Temperature default → 7d
         renderSensorChart({
-            elementId: '#chart_temperature_7d',
+            elementId: '#chartTemperature7d',
             apiUrl: api.week,
             field: 'avg_temp',
             title: 'Temperature',
@@ -228,7 +232,7 @@
         });
         // Temperature default → 30d
         renderSensorChart({
-            elementId: '#chart_temperature_30d',
+            elementId: '#chartTemperature30d',
             apiUrl: api.month,
             field: 'avg_temp',
             title: 'Temperature',
@@ -237,7 +241,7 @@
 
         // Humidity default → 24h
         renderSensorChart({
-            elementId: '#chart_humidify_24h',
+            elementId: '#chartHumidify24h',
             apiUrl: api.day,
             field: 'avg_humi',
             title: 'Humidity',
@@ -245,7 +249,7 @@
         });
         // Humidity default → 7d
         renderSensorChart({
-            elementId: '#chart_humidify_7d',
+            elementId: '#chartHumidify7d',
             apiUrl: api.week,
             field: 'avg_humi',
             title: 'Humidity',
@@ -253,7 +257,7 @@
         });
         // Humidity default → 30d
         renderSensorChart({
-            elementId: '#chart_humidify_30d',
+            elementId: '#chartHumidify30d',
             apiUrl: api.month,
             field: 'avg_humi',
             title: 'Humidity',
@@ -262,7 +266,7 @@
 
         // Luminescence default → 24h
         renderSensorChart({
-            elementId: '#chart_luminescence_24h',
+            elementId: '#chartLuminescence24h',
             apiUrl: api.day,
             field: 'avg_lumi',
             title: 'Luminescence',
@@ -270,7 +274,7 @@
         });
         // Luminescence default → 7d
         renderSensorChart({
-            elementId: '#chart_luminescence_7d',
+            elementId: '#chartLuminescence7d',
             apiUrl: api.week,
             field: 'avg_lumi',
             title: 'Luminescence',
@@ -278,7 +282,7 @@
         });
         // Luminescence default → 30d
         renderSensorChart({
-            elementId: '#chart_luminescence_30d',
+            elementId: '#chartLuminescence30d',
             apiUrl: api.month,
             field: 'avg_lumi',
             title: 'Luminescence',
@@ -287,7 +291,7 @@
 
         // Soilmoisture default → 24h
         renderSensorChart({
-            elementId: '#chart_soilmoisture_24h',
+            elementId: '#chartSoilMoisture24h',
             apiUrl: api.day,
             field: 'avg_soil',
             title: 'Soil Moisture',
@@ -295,7 +299,7 @@
         });
         // Soilmoisture default → 7d
         renderSensorChart({
-            elementId: '#chart_soilmoisture_7d',
+            elementId: '#chartSoilMoisture7d',
             apiUrl: api.week,
             field: 'avg_soil',
             title: 'Soil Moisture',
@@ -303,7 +307,7 @@
         });
         // Soilmoisture default → 30d
         renderSensorChart({
-            elementId: '#chart_soilmoisture_30d',
+            elementId: '#chartSoilMoisture30d',
             apiUrl: api.month,
             field: 'avg_soil',
             title: 'Soil Moisture',
@@ -311,111 +315,6 @@
         });
     });
 </script>
-
-{{-- <script>
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        const target = $(e.target).attr('href');
-        const map = {
-            '#tab-temp-last-24h': {
-                el: '#chart_temprature_24h',
-                api: api.day,
-                field: 'avg_temp',
-                title: 'Temperature',
-                color: '#F14314'
-            },
-            '#tab-temp-last-7d': {
-                el: '#chart_temprature_7d',
-                api: api.week,
-                field: 'avg_temp',
-                title: 'Temperature',
-                color: '#F14314'
-            },
-            '#tab-temp-last-30d': {
-                el: '#chart_temprature_30d',
-                api: api.month,
-                field: 'avg_temp',
-                title: 'Temperature',
-                color: '#F14314'
-            },
-
-            '#tab-humi-last-24h': {
-                el: '#chart_humidify_24h',
-                api: api.day,
-                field: 'avg_humi',
-                title: 'Humidity',
-                color: '#F42523'
-            },
-            '#tab-humi-last-7d': {
-                el: '#chart_humidify_7d',
-                api: api.week,
-                field: 'avg_humi',
-                title: 'Humidity',
-                color: '#F42523'
-            },
-            '#tab-humi-last-30d': {
-                el: '#chart_humidify_30d',
-                api: api.month,
-                field: 'avg_humi',
-                title: 'Humidity',
-                color: '#F42523'
-            },
-
-            '#tab-lumi-last-24h': {
-                el: '#chart_luminescence_24h',
-                api: api.day,
-                field: 'avg_lumi',
-                title: 'Luminescence',
-                color: '#F67945'
-            },
-            '#tab-lumi-last-7d': {
-                el: '#chart_luminescence_7d',
-                api: api.week,
-                field: 'avg_lumi',
-                title: 'Luminescence',
-                color: '#F67945'
-            },
-            '#tab-lumi-last-30d': {
-                el: '#chart_luminescence_30d',
-                api: api.month,
-                field: 'avg_lumi',
-                title: 'Luminescence',
-                color: '#F67945'
-            },
-
-            '#tab-soil-last-24h': {
-                el: '#chart_soilmoisture_24h',
-                api: api.day,
-                field: 'avg_soil',
-                title: 'Soil Moisture',
-                color: '#2E86C1'
-            },
-            '#tab-soil-last-7d': {
-                el: '#chart_soilmoisture_7d',
-                api: api.week,
-                field: 'avg_soil',
-                title: 'Soil Moisture',
-                color: '#2E86C1'
-            },
-            '#tab-soil-last-30d': {
-                el: '#chart_soilmoisture_30d',
-                api: api.month,
-                field: 'avg_soil',
-                title: 'Soil Moisture',
-                color: '#2E86C1'
-            }
-        };
-
-        if (map[target]) {
-            renderSensorChart({
-                elementId: map[target].el,
-                apiUrl: map[target].api,
-                field: map[target].field,
-                title: map[target].title,
-                color: map[target].color
-            });
-        }
-    });
-</script> --}}
 
 @endpush
 

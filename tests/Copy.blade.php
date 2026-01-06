@@ -146,6 +146,42 @@
         </div>
     </div>
 </div>
+
+<div class="col-md-6">
+    <div class="position-relative form-group select2">
+        <label for="wateringHour" class="">Jam Siram</label>
+        <input class="form-control" name="watering_hour" id="wateringHour" type="time" placeholder="12:00">
+    </div>
+</div>
+
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="position-relative form-group">
+            <label for="tempData" class="">Suhu</label>
+            <input class="form-control" name="temp_data" id="tempData" type="text" placeholder="25°C">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="position-relative form-group">
+            <label for="humiData" class="">Kelembapan</label>
+            <input class="form-control" name="humi_data" id="humiData" type="text" placeholder="60%(Rh)">
+        </div>
+    </div>
+</div>
+<div class="form-row">
+    <div class="col-md-6">
+        <div class="position-relative form-group">
+            <label for="lumiData" class="">Cahaya</label>
+            <input class="form-control" name="lumi_data" id="lumiData" type="text" placeholder="50%(Lx)">
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="position-relative form-group">
+            <label for="soilData" class="">Kelembapan Tanah</label>
+            <input class="form-control" name="soil_data" id="soilData" type="text" placeholder="40%(Moisture)">
+        </div>
+    </div>
+</div>
 @endsection
 
 @push('script')
@@ -663,6 +699,24 @@
         setInterval(fetchSensorData, 60000); // Update semua chart tiap 1 menit
     });
 </script>
+
+<!--Apex Charts-->
+<script src="{{asset('js/vendors/charts/apex-charts.js')}}"></script>
+<script src="{{asset('js/scripts-init/charts/apex-charts.js')}}"></script>
+<script src="{{asset('js/scripts-init/charts/apex-series.js')}}"></script>
+
+<!--Sparklines-->
+<script src="{{asset('js/vendors/charts/charts-sparklines.js')}}"></script>
+<script src="{{asset('js/scripts-init/charts/charts-sparklines.js')}}"></script>
+
+<!--Chart.js-->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
+<script src="{{asset('js/scripts-init/charts/chartsjs-utils.js')}}"></script>
+<script src="{{asset('js/scripts-init/charts/chartjs.js')}}"></script>
+
+<!--Circle Progress -->
+<script src="{{asset('js/vendors/circle-progress.js')}}"></script>
+<script src="{{asset('js/scripts-init/circle-progress.js')}}"></script>
 @endpush
 
 @push('style')

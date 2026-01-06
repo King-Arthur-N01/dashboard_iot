@@ -57,9 +57,9 @@ class GardenDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(GardenData $gardenData)
+    public function registerScheduleData(Request $request)
     {
-        //
+        dd($request->all());
     }
 
     /**

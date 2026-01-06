@@ -23,6 +23,7 @@ Route::get('/user', function (Request $request) {
 */
 
 Route::get('/garden/data', [GardenDataController::class, 'latestSensorData']);
+Route::get('/garden/schedule/data', [GardenDataController::class, 'latestSensorData']);
 Route::get('/sensor/data/latest', [SensorDataController::class, 'latestSensorData']);
 Route::get('/sensor/data/last/day', [SensorDataController::class, 'lastDaySensorData']);
 Route::get('/sensor/data/last/week', [SensorDataController::class, 'lastWeekSensorData']);
@@ -35,6 +36,7 @@ Route::get('/sensor/data/error', function (Request $request) {
     ]);
 });
 
+Route::post('/register/schedule/data', [GardenDataController::class, 'registerScheduleData']);
 
 Route::post('/relay/data/manual', [RelayDataController::class, 'manualRelayData']);
 Route::get('/relay/data/status', [RelayDataController::class, 'statusRelayData']);

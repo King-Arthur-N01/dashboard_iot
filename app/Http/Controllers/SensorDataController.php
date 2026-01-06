@@ -58,16 +58,19 @@ class SensorDataController extends Controller
 
         $data = [];
         foreach ($hours as $hour) {
-            $c = $grouped[$hour] ?? collect();
+            $rawData = $grouped[$hour] ?? collect();
+            // Parse $hour (misalnya 'YYYY-MM-DD H') ke format 'HH:mm'
+            $dateTime = \DateTime::createFromFormat('Y-m-d H', $hour);
+            $label = $dateTime ? $dateTime->format('H:i') : $hour; // Fallback ke $hour jika parsing gagal
 
             $data[] = [
-                'label'     => $hour,
-                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
-                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
-                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
-                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
-                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
-                'count'     => $c->count(),
+                'label'     => $label,
+                'avg_temp'  => $rawData->isNotEmpty() ? round($rawData->avg('temp'), 2) : null,
+                'avg_humi'  => $rawData->isNotEmpty() ? round($rawData->avg('humi'), 2) : null,
+                'avg_lumi'  => $rawData->isNotEmpty() ? round($rawData->avg('lumi'), 2) : null,
+                'avg_soil'  => $rawData->isNotEmpty() ? round($rawData->avg('soil'), 2) : null,
+                'avg_rain'  => $rawData->isNotEmpty() ? round($rawData->avg('rain'), 2) : null,
+                'count'     => $rawData->count(),
             ];
         }
 
@@ -100,16 +103,16 @@ class SensorDataController extends Controller
 
         $data = [];
         foreach ($days as $day) {
-            $c = $grouped[$day] ?? collect();
+            $rawData = $grouped[$day] ?? collect();
 
             $data[] = [
                 'label'     => $day,
-                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
-                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
-                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
-                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
-                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
-                'count'     => $c->count(),
+                'avg_temp'  => $rawData->isNotEmpty() ? round($rawData->avg('temp'), 2) : null,
+                'avg_humi'  => $rawData->isNotEmpty() ? round($rawData->avg('humi'), 2) : null,
+                'avg_lumi'  => $rawData->isNotEmpty() ? round($rawData->avg('lumi'), 2) : null,
+                'avg_soil'  => $rawData->isNotEmpty() ? round($rawData->avg('soil'), 2) : null,
+                'avg_rain'  => $rawData->isNotEmpty() ? round($rawData->avg('rain'), 2) : null,
+                'count'     => $rawData->count(),
             ];
         }
 
@@ -141,16 +144,16 @@ class SensorDataController extends Controller
 
         $data = [];
         foreach ($days as $day) {
-            $c = $grouped[$day] ?? collect();
+            $rawData = $grouped[$day] ?? collect();
 
             $data[] = [
                 'label'     => $day,
-                'avg_temp'  => $c->isNotEmpty() ? round($c->avg('temp'), 2) : null,
-                'avg_humi'  => $c->isNotEmpty() ? round($c->avg('humi'), 2) : null,
-                'avg_lumi'  => $c->isNotEmpty() ? round($c->avg('lumi'), 2) : null,
-                'avg_soil'  => $c->isNotEmpty() ? round($c->avg('soil'), 2) : null,
-                'avg_rain'  => $c->isNotEmpty() ? round($c->avg('rain'), 2) : null,
-                'count'     => $c->count(),
+                'avg_temp'  => $rawData->isNotEmpty() ? round($rawData->avg('temp'), 2) : null,
+                'avg_humi'  => $rawData->isNotEmpty() ? round($rawData->avg('humi'), 2) : null,
+                'avg_lumi'  => $rawData->isNotEmpty() ? round($rawData->avg('lumi'), 2) : null,
+                'avg_soil'  => $rawData->isNotEmpty() ? round($rawData->avg('soil'), 2) : null,
+                'avg_rain'  => $rawData->isNotEmpty() ? round($rawData->avg('rain'), 2) : null,
+                'count'     => $rawData->count(),
             ];
         }
 

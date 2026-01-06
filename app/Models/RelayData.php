@@ -9,8 +9,8 @@ class RelayData extends Model
 {
     /** @use HasFactory<\Database\Factories\RelayDataFactory> */
     use HasFactory;
-        protected $table = 'relay_status';
-        protected $fillable = [
+    protected $table = 'relay_status';
+    protected $fillable = [
         'temp_condition',
         'humi_condition',
         'lumi_condition',

@@ -10,7 +10,7 @@
                         <i class="header-icon lnr lnr-leaf mr-3 text-muted opacity-6"></i> [Garden Name]
                     </div>
                     <div class="btn-actions-pane-right text-capitalize">
-                        <a class="btn-wide btn-outline-2x mr-md-2 btn-transition btn btn-outline-secondary btn-sm" href="{{ route('edit.garden') }}"><i class="lnr-cog"></i></a>
+                        <a class="btn-wide btn-outline-2x mr-md-2 btn-transition btn btn-outline-secondary btn-sm" href="{{ route('page.update.garden') }}"><i class="lnr-cog"></i></a>
                     </div>
                 </div>
                 <div class="card-body">
@@ -24,10 +24,10 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-danger"><i class="bi bi-thermometer"></i></div>
                                     <div>
-                                        <h4 class="text-muted widget-heading">Temperature</h4>
+                                        <h6 class="menu-header-subtitle">Temperature</h6>
                                         <div class="widget-numbers">
-                                            <h6 class="mb-0 custom-text" id="temp_value"></h6>
-                                            <div id="wiget_temp"> {{-- Wiget deskripsi perubahan di sini --}}</div>
+                                            <h6 class="mb-0 custom-text" id="tempValue"></h6>
+                                            <div id="wigetTemp"> {{-- Wiget deskripsi perubahan di sini --}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -38,10 +38,10 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-info"><i class="bi bi-moisture"></i></div>
                                     <div>
-                                        <h4 class="text-muted widget-heading">Humidity</h4>
+                                        <h6 class="menu-header-subtitle">Humidity</h6>
                                         <div class="widget-numbers">
-                                            <h6 class="mb-0 custom-text" id="humi_value"></h6>
-                                            <div id="wiget_humi"> {{-- Wiget deskripsi perubahan di sini --}}</div>
+                                            <h6 class="mb-0 custom-text" id="humiValue"></h6>
+                                            <div id="wigetHumi"> {{-- Wiget deskripsi perubahan di sini --}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -52,10 +52,10 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-alternate"><i class="bi bi-sun-fill"></i></div>
                                     <div>
-                                        <h4 class="text-muted widget-heading">Light</h4>
+                                        <h6 class="menu-header-subtitle">Light</h6>
                                         <div class="widget-numbers">
-                                            <h6 class="mb-0 custom-text" id="lumi_value"></h6>
-                                            <div id="wiget_lumi"> {{-- Wiget deskripsi perubahan di sini --}}</div>
+                                            <h6 class="mb-0 custom-text" id="lumiValue"></h6>
+                                            <div id="wigetLumi"> {{-- Wiget deskripsi perubahan di sini --}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -66,10 +66,10 @@
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-success"><i class="bi bi-water"></i></div>
                                     <div>
-                                        <h4 class="text-muted widget-heading">Soil Moisture</h4>
+                                        <h6 class="menu-header-subtitle">Soil Moisture</h6>
                                         <div class="widget-numbers">
-                                            <h6 class="mb-0 custom-text" id="soil_value"></h6>
-                                            <div id="wiget_soil"> {{-- Wiget deskripsi perubahan di sini --}}</div>
+                                            <h6 class="mb-0 custom-text" id="soilValue"></h6>
+                                            <div id="wigetSoil"> {{-- Wiget deskripsi perubahan di sini --}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -80,7 +80,7 @@
                         <div class="col-sm-12 col-md-6 col-xl-6">
                             <div class="card stat-card p-3" style="position: relative;">
                                 <div class="card-header-tab card-header">
-                                    <h4 class="font-size-md">watering schedule</h4>
+                                    <h6 class="card-header">watering schedule</h6>
                                 </div>
                                 <div>
                                     <ul class="list-group list-group-flush">
@@ -89,7 +89,7 @@
                                                 <div class="widget-content-wrapper">
                                                     <div class="widget-content-left center-elem mr-2"><i class="pe-7s-play"></i></div>
                                                     <div class="widget-content-left">
-                                                        <h5 class="widget-heading">Starting On :</h5>
+                                                        <h6 class="widget-heading">Starting On :</h6>
                                                         <p class="">2024-01-01 08:00 AM</p>
                                                     </div>
                                                 </div>
@@ -100,7 +100,7 @@
                                                 <div class="widget-content-wrapper">
                                                     <div class="widget-content-left center-elem mr-2"><i class="pe-7s-timer"></i></div>
                                                     <div class="widget-content-left">
-                                                        <h5 class="widget-heading">Duration :</h5>
+                                                        <h6 class="widget-heading">Duration :</h6>
                                                         <p class="">10 Minute</p>
                                                     </div>
                                                 </div>
@@ -111,7 +111,7 @@
                                                 <div class="widget-content-wrapper">
                                                     <div class="widget-content-left center-elem mr-2"><i class="pe-7s-repeat"></i></div>
                                                     <div class="widget-content-left">
-                                                        <h5 class="widget-heading">Repeat Every :</h5>
+                                                        <h6 class="widget-heading">Repeat Every :</h6>
                                                         <p class="">Day</p>
                                                     </div>
                                                 </div>
@@ -132,7 +132,7 @@
                                                     <div class="widget-heading">Water Pump 1 Status :</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <span id="pump1_status" class="badge badge-secondary mr-2">....</span>
+                                                    <span id="pumpStatus1" class="mb-2 mr-2 badge badge-secondary">....</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -147,7 +147,7 @@
                                                     <div class="widget-heading">Water Pump 2 Status :</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <span id="pump2_status" class="badge badge-secondary mr-2">....</span>
+                                                    <span id="pumpStatus2" class="mb-2 mr-2 badge badge-secondary">....</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -161,7 +161,7 @@
                                                     <div class="widget-heading">Water Pump 1 On/Off :</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <input class="water-pump-toggle" id="water_pump_1" data-relay-id="1" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                                                    <input class="water-pump-toggle" id="waterPump1" data-relay-id="1" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
                                                 </div>
                                             </div>
                                         </div>
@@ -175,7 +175,7 @@
                                                     <div class="widget-heading">Water Pump 2 On/Off :</div>
                                                 </div>
                                                 <div class="widget-content-right">
-                                                    <input class="water-pump-toggle" id="water_pump_2" data-relay-id="2" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                                                    <input class="water-pump-toggle" id="waterPump2" data-relay-id="2" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
                                                 </div>
                                             </div>
                                         </div>
@@ -186,7 +186,7 @@
                     </div>
                 </div>
                 <div class="text-center d-block p-3 card-footer">
-                    <a class="btn-pill btn-shadow btn-wide fsize-1 btn btn-primary btn-lg" href="{{ route('report.sensor.data') }}">
+                    <a class="btn-pill btn-shadow btn-wide fsize-1 btn btn-primary btn-lg" href="{{ route('page.sensor.report') }}">
                         <span class="mr-2 opacity-7">
                             <i class="icon icon-anim-pulse ion-ios-analytics-outline"></i>
                         </span>
@@ -220,11 +220,11 @@
             let changeText, iconClass, colorClass;
 
             if (change > 0) {
-                changeText = `Increased by ${absChange}%`;
+                changeText = `Increased by`;
                 iconClass = 'fa-angle-up';
                 colorClass = 'text-success';
             } else if (change < 0) {
-                changeText = `Decreased by ${absChange}%`;
+                changeText = `Decreased by`;
                 iconClass = 'fa-angle-down';
                 colorClass = 'text-warning';
             } else {
@@ -248,19 +248,19 @@
                 .then(response => response.json())
                 .then(data => {
                     // Update nilai utama
-                    document.getElementById('temp_value').textContent = data.temperature + "°C";
-                    document.getElementById('humi_value').textContent = data.humidity + " (Rh)";
-                    document.getElementById('lumi_value').textContent = data.light + " %";
-                    document.getElementById('soil_value').textContent = data.soil + " %";
+                    document.getElementById('tempValue').textContent = data.temperature + "°C";
+                    document.getElementById('humiValue').textContent = data.humidity + " (Rh)";
+                    document.getElementById('lumiValue').textContent = data.light + " %";
+                    document.getElementById('soilValue').textContent = data.soil + " %";
                     // Hitung dan tampilkan perubahan jika ada data sebelumnya
                     if (lastData) {
-                        updateChangeDisplay('wiget_temp', parseFloat(data.temperature), parseFloat(
+                        updateChangeDisplay('wigetTemp', parseFloat(data.temperature), parseFloat(
                             lastData.temperature), 'Temperature');
-                        updateChangeDisplay('wiget_humi', parseFloat(data.humidity), parseFloat(lastData
+                        updateChangeDisplay('wigetHumi', parseFloat(data.humidity), parseFloat(lastData
                             .humidity), 'Humidity');
-                        updateChangeDisplay('wiget_lumi', parseFloat(data.light), parseFloat(lastData
+                        updateChangeDisplay('wigetLumi', parseFloat(data.light), parseFloat(lastData
                             .light), 'Light');
-                        updateChangeDisplay('wiget_soil', parseFloat(data.soil), parseFloat(lastData
+                        updateChangeDisplay('wigetSoil', parseFloat(data.soil), parseFloat(lastData
                             .soil), 'Soil');
                     }
                     // Simpan data saat ini sebagai lastData untuk perbandingan selanjutnya
@@ -312,10 +312,10 @@
             fetch("{{ url('/api/relay/data/status') }}")
                 .then(res => res.json())
                 .then(data => {
-                    const pump1 = $('#pump1_status');
-                    const pump2 = $('#pump2_status');
-                    const toggle1 = $('#water_pump_1');
-                    const toggle2 = $('#water_pump_2');
+                    const pump1 = $('#pumpStatus1');
+                    const pump2 = $('#pumpStatus2');
+                    const toggle1 = $('#waterPump1');
+                    const toggle2 = $('#waterPump2');
 
                     // Pump 1
                     const isPump1On = data.relay1_status == 1;
@@ -346,7 +346,9 @@
         setInterval(updatePumpStatus, 5000);
     });
 </script>
-
+<!--Circle Progress -->
+<script src="{{asset('js/vendors/circle-progress.js')}}"></script>
+<script src="{{asset('js/scripts-init/circle-progress.js')}}"></script>
 @endpush
 
 @push('style')

@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use phpDocumentor\Reflection\Types\Nullable;
 
 return new class extends Migration
 {
@@ -11,14 +12,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('relay_data', function (Blueprint $table) {
+        Schema::create('schedule_data', function (Blueprint $table) {
             $table->id();
-            $table->string('condition_name');
-            $table->json('temp_condition');
-            $table->json('humi_condition');
-            $table->json('lumi_condition');
-            $table->json('soil_condition');
-            $table->json('rain_condition');
+            $table->string('schedule_name');
+            $table->json('schedule_time');
+            $table->json('schedule_date');
+            $table->integer('schedule_cycle');
+            $table->integer('relay_id');
             $table->timestamps();
         });
     }
@@ -28,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('relay_data');
+        Schema::dropIfExists('schedule_data');
     }
 };

@@ -10,8 +10,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, shrink-to-fit=no" />
     <!-- Disable tap highlight on IE -->
     <meta name="msapplication-tap-highlight" content="no">
-    <link href="{{ asset('assets/css/base.min.css') }}" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <link href="{{ asset('assets/css/base.min.css') }}" rel="stylesheet">
 </head>
 
 <body>
@@ -271,13 +271,13 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="{{ route('report.sensor.data') }}">
+                                <a href="{{route('page.sensor.report')}}">
                                     <i class="metismenu-icon  pe-7s-graph1"></i>
                                     Statistic
                                 </a>
                             </li>
                             <li>
-                                <a href="">
+                                <a href="{{route('page.update.garden')}}">
                                     <i class="metismenu-icon  pe-7s-date"></i>
                                     Schedule
                                 </a>

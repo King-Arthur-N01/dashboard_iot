@@ -25,13 +25,14 @@ Route::middleware('auth')->group(function () {
 Route::get('/register/garden', function () {
     return view('layouts.garden_page.create_garden');
 })->name('page.register.garden');
-Route::post('/register/garden', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
-Route::get('/edit/garden', [GardenDataController::class, 'pageEditGardenData'])->name('edit.garden');
+Route::post('/register/garden/data', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
 
 Route::get('/update/garden', function () {
     return view('layouts.garden_page.update_garden');
 })->name('page.update.garden');
 
-Route::get('/view/sensor/report', [SensorDataController::class, 'summarySensorData'])->name('report.sensor.data');
+Route::post('/register/garden/data', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
+
+Route::get('/sensor/report', [SensorDataController::class, 'summarySensorData'])->name('page.sensor.report');
 
 require __DIR__.'/auth.php';

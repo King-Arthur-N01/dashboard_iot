@@ -29,7 +29,7 @@
                                     <span>It looks like you've been seen for the first time</span>
                                 </h4>
                                 <div>
-                                    <form method="POST" action="{{ route('register.garden') }}">
+                                    <form method="POST" action="{{ route('create.garden') }}">
                                     @csrf
                                         <div class="form-row">
                                             <div class="col-md-6">

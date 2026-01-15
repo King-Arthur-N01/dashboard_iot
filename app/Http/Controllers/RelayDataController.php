@@ -18,7 +18,7 @@ class RelayDataController extends Controller
     {
         $request->validate([
             'relay' => 'required|in:on,off',
-            'relay_id' => 'required|in:1,2',
+            'relay_id' => 'required|in:1,2,3,4',
         ]);
 
         $payload = [
@@ -58,6 +58,69 @@ class RelayDataController extends Controller
         }
     }
 
+    public function lastDayRelayData(): JsonResponse
+    {
+        try {
+            $from = Carbon::now('UTC')->subDay();
+            $to   = Carbon::now('UTC');
+
+            $logs = RelayData::whereBetween('created_at', [$from, $to])
+                ->orderBy('created_at')
+                ->get();
+
+            $result = [
+                'range'   => 'last_24_hours',
+                'relay_1' => [],
+                'relay_2' => [],
+            ];
+
+            $active = [
+                'relay_1' => null,
+                'relay_2' => null,
+            ];
+
+            foreach ($logs as $log) {
+                $time = $log->created_at->timezone('Asia/Jakarta');
+
+                // ===== RELAY 1 =====
+                if ($log->relay_1_status === 1 && $active['relay_1'] === null) {
+                    $active['relay_1'] = $time;
+                }
+
+                if ($log->relay_1_status === 0 && $active['relay_1']) {
+                    $duration = $active['relay_1']->diffInSeconds($time);
+
+                    $result['relay_1'][] = [
+                        'start'    => $active['relay_1']->format('H:i:s'),
+                        'duration' => $duration, // DETIK
+                    ];
+
+                    $active['relay_1'] = null;
+                }
+
+                // ===== RELAY 2 =====
+                if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
+                    $active['relay_2'] = $time;
+                }
+
+                if ($log->relay_2_status === 0 && $active['relay_2']) {
+                    $duration = $active['relay_2']->diffInSeconds($time);
+
+                    $result['relay_2'][] = [
+                        'start'    => $active['relay_2']->format('H:i:s'),
+                        'duration' => $duration,
+                    ];
+
+                    $active['relay_2'] = null;
+                }
+            }
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Failed to build chart data'], 500);
+        }
+    }
     /**
      * Store a newly created resource in storage.
      */

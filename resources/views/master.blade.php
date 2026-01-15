@@ -724,7 +724,7 @@
             </div>
         </div>
     </div>
-    <div class="app-drawer-overlay d-none animated fadeIn"></div>
+    @yield('modals')
     <!--DRAWER END-->
 
     <!--SCRIPTS INCLUDES-->
@@ -735,6 +735,9 @@
     <script src="{{ asset('js/metismenu.js') }}"></script>
     <script src="{{ asset('js/scripts-init/app.js') }}"></script>
     <script src="{{ asset('js/scripts-init/demo.js') }}"></script>
+    <!--BlockUI -->
+    <script src="{{asset('js/vendors/blockui.js')}}"></script>
+    <script src="{{asset('js/scripts-init/blockui.js')}}"></script>
     @stack('script')
     @stack('style')
 </body>

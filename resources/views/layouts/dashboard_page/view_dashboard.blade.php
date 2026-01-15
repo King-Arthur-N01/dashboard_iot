@@ -18,7 +18,10 @@
                     <div class="garden mb-4">
                         <img class="image-header" src="{{asset('/assets/images/dropdown-header/header_menu_4.jpg')}}" alt="">
                     </div>
-                    <div class="row mb-4 g-3">
+                    <div class="row mb-4 g-3 element-block-example" id="realtimeData">
+                        <div class="col-12">
+                            <h5 class="card-title">Realtime Monitoring</h5>
+                        </div>
                         <div class="col-sm-6 col-md-3 col-xl-3">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
@@ -72,6 +75,22 @@
                                             <div id="wigetSoil"> {{-- Wiget deskripsi perubahan di sini --}}</div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- loading overlay --}}
+                        <div class="body-block-example-1 d-none">
+                            <div class="loader bg-transparent no-shadow p-0">
+                                <div class="ball-grid-pulse">
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
                                 </div>
                             </div>
                         </div>
@@ -181,6 +200,9 @@
                                         </div>
                                     </li>
                                 </ul>
+                                <button class="btn btn-primary mr-2 mb-2 block-element-btn-example-1">
+                                    Elements Example 1
+                                </button>
                             </div>
                         </div>
                     </div>
@@ -302,7 +324,6 @@
         // Bind toggle handler
         $('.water-pump-toggle').on('change', function () {
             if ($(this).data('syncing')) return; // abaikan jika sedang sinkronisasi
-
             const relayId = $(this).data('relay-id');
             const isOn = $(this).prop('checked');
             sendManualToggle(relayId, isOn);
@@ -322,7 +343,6 @@
                     pump1.text(isPump1On ? 'on' : 'off')
                         .removeClass('badge-success badge-danger')
                         .addClass(isPump1On ? 'badge-success' : 'badge-danger');
-
                     toggle1.data('syncing', true)
                         .prop('checked', isPump1On)
                         .bootstrapToggle(isPump1On ? 'on' : 'off');
@@ -333,7 +353,6 @@
                     pump2.text(isPump2On ? 'on' : 'off')
                         .removeClass('badge-success badge-danger')
                         .addClass(isPump2On ? 'badge-success' : 'badge-danger');
-
                     toggle2.data('syncing', true)
                         .prop('checked', isPump2On)
                         .bootstrapToggle(isPump2On ? 'on' : 'off');
@@ -349,6 +368,9 @@
 <!--Circle Progress -->
 <script src="{{asset('js/vendors/circle-progress.js')}}"></script>
 <script src="{{asset('js/scripts-init/circle-progress.js')}}"></script>
+<!--BlockUI -->
+<script src="{{asset ('js/vendors/blockui.js')}}"></script>
+<script src="{{asset ('js/scripts-init/blockui.js')}}"></script>
 @endpush
 
 @push('style')

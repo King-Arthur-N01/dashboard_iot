@@ -252,7 +252,7 @@
                     lastData = {
                         temperature: data.temperature,
                         humidity: data.humidity,
-                        light: data.light,
+                        light: data.light, 
                         soil: data.soil
                     };
                 })
@@ -608,6 +608,7 @@
 
 <script>
     document.addEventListener("DOMContentLoaded", function () {
+        // const text_modal = `Jadwal ${formData.scheduleName} Berhasil Ditambahkan!`;
         let chartTemp, chartHumi, chartLumi, chartSoil; // Instance terpisah per chart
         let cachedData = null; // Cache data untuk hindari fetch ulang
 

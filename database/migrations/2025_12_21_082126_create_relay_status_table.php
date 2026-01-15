@@ -15,6 +15,9 @@ return new class extends Migration
             $table->id();
             $table->boolean('relay_1_status');
             $table->boolean('relay_2_status');
+            $table->integer('relay_id');
+            $table->time('time');
+            $table->string('note')->nullable();
             $table->timestamps();
         });
     }

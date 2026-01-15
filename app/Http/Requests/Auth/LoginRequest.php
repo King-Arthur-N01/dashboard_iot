@@ -44,9 +44,9 @@ class LoginRequest extends FormRequest
         if (! Auth::attempt($this->only(['nik', 'password']), $this->boolean('remember'))) {
             RateLimiter::hit($this->throttleKey());
             throw ValidationException::withMessages([
-            'error' => 'NIK atau Password salah!!!',
-        ]);
-    }
+                'error' => 'NIK atau Password salah!!!',
+            ]);
+        }
 
         RateLimiter::clear($this->throttleKey());
     }

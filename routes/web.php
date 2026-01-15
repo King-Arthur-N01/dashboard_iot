@@ -22,16 +22,15 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/register/garden', function () {
+Route::get('/create/garden', function () {
     return view('layouts.garden_page.create_garden');
-})->name('page.register.garden');
-Route::post('/register/garden/data', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
+})->name('page.create.garden');
+Route::post('/create/garden/data', [GardenDataController::class, 'createGardenData'])->name('create.garden');
 
 Route::get('/update/garden', function () {
     return view('layouts.garden_page.update_garden');
 })->name('page.update.garden');
-
-Route::post('/register/garden/data', [GardenDataController::class, 'registerGardenData'])->name('register.garden');
+Route::post('/update/garden/data', [GardenDataController::class, 'updateGardenData'])->name('update.garden');
 
 Route::get('/sensor/report', [SensorDataController::class, 'summarySensorData'])->name('page.sensor.report');
 

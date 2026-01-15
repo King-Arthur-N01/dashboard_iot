@@ -41,6 +41,11 @@
     height: 24px;
     margin-right: 8px;
 }
+
+.icon-image{
+    height: 30px;
+}
+
 .border-secondary {
     border-color: #6c757d
 }
@@ -3355,7 +3360,7 @@ input[type=button].btn-block,input[type=reset].btn-block,input[type=submit].btn-
     z-index: 1000;
     display: none;
     float: left;
-    min-width: 15rem;
+    /* min-width: 15rem; */
     padding: .65rem 0;
     margin: .125rem 0 0;
     font-size: .88rem;
@@ -5813,6 +5818,8 @@ a.close.disabled {
     overflow-y: auto
 }
 
+.modal-text {display: flex;justify-content: space-evenly;}
+
 .modal {
     position: fixed;
     top: 0;
@@ -5963,7 +5970,7 @@ a.close.disabled {
 
 @media (min-width: 992px) {
     .modal-lg,.modal-xl {
-        max-width:800px
+        max-width: 1200px;
     }
 }
 

@@ -252,7 +252,7 @@
                     lastData = {
                         temperature: data.temperature,
                         humidity: data.humidity,
-                        light: data.light, 
+                        light: data.light,
                         soil: data.soil
                     };
                 })
@@ -596,6 +596,26 @@
         </div>
     </div>
 </div>
+
+
+
+<div class="no-results">
+    <div class="swal2-icon swal2-success swal2-animate-success-icon">
+        <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
+        <span class="swal2-success-line-tip"></span>
+        <span class="swal2-success-line-long"></span>
+        <div class="swal2-success-ring"></div>
+        <div class="swal2-success-fix" style="background-color: rgb(255, 255, 255);"></div>
+        <div class="swal2-success-circular-line-right" style="background-color: rgb(255, 255, 255);"></div>
+    </div>
+    <div class="results-subtitle mt-4">Finished!</div>
+    <div class="results-title">You arrived at the last form wizard step!</div>
+    <div class="mt-3 mb-3"></div>
+    <div class="text-center">
+        <button class="btn-shadow btn-wide btn btn-success btn-lg">Finish</button>
+    </div>
+</div>
+
 @endsection
 
 @push('script')
@@ -718,6 +738,160 @@
 <!--Circle Progress -->
 <script src="{{asset('js/vendors/circle-progress.js')}}"></script>
 <script src="{{asset('js/scripts-init/circle-progress.js')}}"></script>
+
+<script>
+    function generateEditTimeInputs(count, existingTimes = []) {
+        $('#editDynamicInput').empty();
+
+        for (let i = 0; i < count; i++) {
+            const value = existingTimes[i] ?? '';
+            $('#editDynamicInput').append(`
+                <div class="col-md-3">
+                    <div class="form-group">
+                        <label>Jam Siram ${i + 1}</label>
+                        <input type="time"
+                            class="form-control"
+                            name="edit_schedule_time[]"
+                            value="${value}">
+                    </div>
+                </div>
+            `);
+        }
+    }
+    $('#editSelectDynamicInput').on('change', function () {
+        const count = parseInt($(this).val());
+        if (!isNaN(count)) {
+            generateEditTimeInputs(count);
+        }
+    });
+    let currentScheduleId = null;
+    $('#scheduleTable').on('click', '.btn-edit', function () {
+        currentScheduleId = $(this).data('id');
+        $('#modalEdit').modal('show');
+        fetch(`{{ url('/api/read/schedule/data') }}/${currentScheduleId}`, {
+            method: 'GET',
+            headers: { 'Accept': 'application/json' }
+        })
+        .then(res => res.json())
+        .then(res => {
+            const data = res.data; // ambil objek di dalam "data"
+            $('#editScheduleName').val(data.schedule_name);
+            $('#editRelayId').val(data.relay_id);
+            const cycle = parseInt(data.schedule_cycle);
+            const times = data.schedule_time.replace(/"/g, '').split(',');
+
+            $('#editSelectDynamicInput').val(cycle);
+            generateEditTimeInputs(cycle, times);
+
+            const dates = data.schedule_date.replace(/"/g, '').split(',');
+            $('#editScheduleDate').val(dates).trigger('change');
+        })
+
+        .catch(err => {
+            console.error(err);
+            alert('Gagal memuat data');
+        });
+    });
+
+    $('#modalEdit').on('hidden.bs.modal', function () {
+        currentScheduleId = null;
+        $('#editScheduleName').val('');
+        $('#editRelayId').val('');
+        $('#editScheduleDate').val(null).trigger('change');
+        $('#editSelectDynamicInput').val('1');
+        $('#editDynamicInput').empty();
+    });
+
+
+    $('#editSchedule').on('click', function () {
+        if (!currentScheduleId) {
+            alert('ID jadwal tidak ditemukan');
+            return;
+        }
+        let editScheduleTime = [];
+        $('input[name="edit_schedule_time[]"]').each(function() {
+            const value = $(this).val();
+            if (value) {
+                editScheduleTime.push(value);
+            }
+        });
+
+        const editSelectedFrequency = parseInt($('#editSelectDynamicInput').val());
+        if (editScheduleTime.length !== editSelectedFrequency) {
+            alert('Jumlah jam penyiraman tidak sesuai dengan frekuensi penyiraman yang dipilih!');
+            return;
+        }
+        if (confirm("Apakah anda yakin semua data sudah terisi dengan benar?")) {
+            const editData = {
+                schedule_name: $('#editScheduleName').val(),
+                relay_id: $('#editRelayId').val(),
+                schedule_date: $('#editScheduleDate').val(),
+                schedule_time: editScheduleTime,
+                schedule_cycle: $('#editSelectDynamicInput').val()
+            };
+            fetch(`{{ url('/api/update/schedule/data') }}/${currentScheduleId}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(editData)
+            })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                    $('#modalHeader').text('Error');
+                    $('#modalText').text(`Network response was not ok.`);
+                    $('#modalAlert').modal('show');
+                }
+                return response.json();
+            })
+            .then(editData => {
+                // Success handling
+                if (editData.success) {
+                    const successMessage = editData.success;
+                    const text_modal = `<div class="modal-text"><h5>${successMessage}</h5> <img class="rounded-circle icon-image" src="{{asset('/assets/images/icons/success.png')}}" alt=""></div>`;
+                    $('#modalHeader').text('Success');
+                    $('#modalText').html(text_modal);
+                    $('#modalAlert').modal('show');
+                    setTimeout(function() {
+                        $('#modalAlert').modal('hide');
+                        // Reset form setelah sukses
+                        $('#scheduleName').val('');
+                        $('#relayId').val('');
+                        $('#scheduleDate').val(null).trigger('change');
+                        $('#combinedScheduleDate').val('');
+                        $('#selectDynamicInput').val('1').trigger('change');
+                        $('#dynamicInput').empty();
+                    }, 2000);
+                }
+            })
+            .catch(error => {
+                // Error handling
+                console.error('Error:', error);
+                if (editData.error && error.response.editData) {
+                    const warningMessage = editData.error;
+                    const text_modal = `<div class="modal-text">><h5>${warningMessage}></h5> <img class="rounded-circle icon-image" src="{{asset('/assets/images/icons/warning.png')}}" alt=""></div>`;
+                    $('#modalHeader').text('Failed');
+                    $('#modalText').html(text_modal);
+                    $('#modalAlert').modal('show');
+                    setTimeout(function() {
+                        $('#modalAlert').modal('hide');
+                    }, 2000);
+                } else {
+                    $('#modalHeader').text('Error');
+                    $('#modalText').text('Terjadi kesalahan saat mengirim data.');
+                    $('#modalAlert').modal('show');
+                    setTimeout(function() {
+                        $('#modalAlert').modal('hide');
+                    }, 2000);
+                }
+            });
+        } else {
+            // User cancelled, do nothing
+        }
+    });
+</script>
 @endpush
 
 @push('style')

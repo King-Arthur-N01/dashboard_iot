@@ -7,7 +7,7 @@
             <div class="mb-3 card">
                 <div class="card-header-tab card-header">
                     <div class="card-header-title font-size-lg text-capitalize font-weight-normal">
-                        <i class="header-icon lnr lnr-leaf mr-3 text-muted opacity-6"></i> [Garden Name]
+                        <i class="header-icon lnr lnr-leaf mr-3 text-muted opacity-6"></i><a id="gardenName"></a>
                     </div>
                     <div class="btn-actions-pane-right text-capitalize">
                         <a class="btn-wide btn-outline-2x mr-md-2 btn-transition btn btn-outline-secondary btn-sm" href="{{ route('page.update.garden') }}"><i class="lnr-cog"></i></a>
@@ -16,7 +16,7 @@
                 <div class="card-body">
                     <!-- Garden Visualization -->
                     <div class="garden mb-4">
-                        <img class="image-header" src="{{asset('/assets/images/dropdown-header/header_menu_4.jpg')}}" alt="">
+                        <img class="image-header" id="imageHeader" alt="">
                     </div>
                     <div class="row mb-4 g-3 element-block-example" id="realtimeData">
                         <div class="col-12">
@@ -295,11 +295,31 @@
                 })
                 .catch(err => console.error('Error fetching sensor data:', err));
         };
-
         // Jalankan pertama kali
         fetchLatestSensorData();
         // Jalankan ulang tiap 1 menit
         setInterval(fetchLatestSensorData, 60000);
+
+        const fetchGardenData = () => {
+            fetch("{{ url('/api/read/garden/data') }}")
+                .then(response => response.json())
+                .then(data => {
+                    gardenData = data.data[0]; // Mengakses elemen pertama dari array data
+                    document.getElementById('gardenName').textContent = gardenData.garden_name;
+                    document.getElementById('imageHeader').src = "/storage/" + gardenData.garden_picture;
+                })
+                .catch(err => console.error('Error fetching sensor data:', err));
+        };
+        const fetchScheduleData = () => {
+            fetch("{{ url('/api/read/schedule/data') }}")
+                .then(response => response.json())
+                .then(data => {
+                    console.log(data);
+                })
+                .catch(err => console.error('Error fetching sensor data:', err));
+        };
+        fetchGardenData();
+        fetchScheduleData();
     });
 </script>
 <script>
@@ -360,7 +380,6 @@
                 })
                 .catch(err => console.error(err));
         }
-
         updatePumpStatus();
         setInterval(updatePumpStatus, 5000);
     });

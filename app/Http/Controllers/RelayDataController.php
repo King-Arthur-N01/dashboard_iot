@@ -81,7 +81,6 @@ class RelayDataController extends Controller
 
             foreach ($logs as $log) {
                 $time = $log->created_at->timezone('Asia/Jakarta');
-
                 // ===== RELAY 1 =====
                 if ($log->relay_1_status === 1 && $active['relay_1'] === null) {
                     $active['relay_1'] = $time;
@@ -105,7 +104,6 @@ class RelayDataController extends Controller
 
                 if ($log->relay_2_status === 0 && $active['relay_2']) {
                     $duration = $active['relay_2']->diffInSeconds($time);
-
                     $result['relay_2'][] = [
                         'start'    => $active['relay_2']->format('H:i:s'),
                         'duration' => $duration,

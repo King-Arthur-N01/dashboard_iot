@@ -30,6 +30,22 @@
                                 </tr>
                             </thead>
                         </table>
+                        {{-- loading overlay --}}
+                        <div class="loading-overlay d-none">
+                            <div class="loader bg-transparent no-shadow p-0">
+                                <div class="ball-grid-pulse">
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                    <div class="bg-white"></div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="tab-pane" id="tab-add-schedule" role="tabpanel">
                         <div class="form-row">
@@ -50,7 +66,6 @@
                             <div class="col-md-6">
                                 <div class="position-relative form-group">
                                     <label for="scheduleDate" class="">Waktu Siram</label>
-                                    <input type="hidden" name="combined_schedule_date_value" id="combinedScheduleDate">
                                     <select multiple="multiple" class="multiselect-dropdown form-control" id="scheduleDate">
                                         <option value="senin">Senin</option>
                                         <option value="selasa">Selasa</option>
@@ -128,7 +143,6 @@
                     <div class="col-md-6">
                         <div class="position-relative form-group">
                             <label for="editScheduleDate" class="">Waktu Siram</label>
-                            <input type="hidden" name="combined_edit_schedule_date" id="combinedEditScheduleDate">
                             <select multiple="multiple" class="multiselect-dropdown form-control" id="editScheduleDate">
                                 <option value="senin">Senin</option>
                                 <option value="selasa">Selasa</option>
@@ -169,7 +183,7 @@
             <div class="modal-footer" id="modalButtonEdit">
                 <div class="d-block text-right card-footer">
                     <button type="button" class="mt-2 btn btn-danger" data-dismiss="modal">Batal</button>
-                    <button type="submit" class="mt-2 btn btn-primary" id="editSchedule">Tambah Data</button>
+                    <button type="submit" class="mt-2 btn btn-primary" id="editSchedule">Update Data</button>
                 </div>
             </div>
         </div>
@@ -197,6 +211,16 @@
 @push('script')
     <script>
         $(document).ready(function() {
+            let overlay = $('.loading-overlay');
+            overlay.appendTo('body');
+            // Set automatic soft refresh table
+            setInterval(function() {
+                overlay.addClass('is-active');
+                table.ajax.reload(null, false);
+                table.on('draw.dt', function() {
+                    overlay.removeClass('is-active');
+                });
+            }, 60000);
             // kode javascript untuk menginisiasi datatable dan berfungsi sebagai dynamic table
             const table = $('#scheduleTable').DataTable({
                 processing: true,
@@ -213,13 +237,8 @@
                     {
                         data: 'schedule_date',
                         render: function(data) {
-                            // Parse string menjadi array dan format ulang (hapus quotes ekstra)
-                            try {
-                                const dates = JSON.parse(data).split(',');  // Misal: ["senin", "selasa"]
-                                return dates.join(', ');  // Output: "senin, selasa"
-                            } catch {
-                                return data;  // Fallback jika gagal parse
-                            }
+                            const dates = JSON.parse(data)  // Misal: ["senin", "selasa"]
+                            return Array.isArray(dates) ? dates.join(', ') : data;
                         }
                     },
                     {
@@ -231,13 +250,8 @@
                     {
                         data: 'schedule_time',
                         render: function(data) {
-                            // Parse string menjadi array dan format ulang
-                            try {
-                                const times = JSON.parse(data).split(',');  // Misal: ["08:00", "17:00"]
-                                return times.join(', ');  // Output: "08:00, 17:00"
-                            } catch {
-                                return data;  // Fallback
-                            }
+                            const times = JSON.parse(data); // hasil: ["08:00","12:00","17:00"]
+                            return Array.isArray(times) ? times.join(', ') : data;
                         }
                     },
                     { data: 'relay_id' },
@@ -282,8 +296,10 @@
             // Inisialisasi input dinamis saat halaman dimuat
             updateDynamicInputs();
             $('#selectDynamicInput').change(updateDynamicInputs);
-            // Opsional: Jika menggunakan plugin multiselect untuk scheduleDate, tambahkan logika untuk mengisi input hidden
-            $('#scheduleDate').on('change', function() { $('#combinedScheduleDate').val($(this).val().join(',')); });
+            $('#scheduleDate').on('change', function() {
+                // simpan sebagai JSON string array
+                const selectedDates = $(this).val(); // ini sudah berupa array
+            });
 
             // Fungsi menambah data schedule
             $('#addSchedule').on('click', function() {
@@ -295,11 +311,11 @@
                     }
                 });
                 let formData = {
-                    scheduleName: $('input[name="schedule_name"]').val(),
-                    relayId: $('input[name="relay_id"]').val(),
-                    scheduleDate: $('#combinedScheduleDate').val(),
-                    scheduleTime: scheduleTime,  // array dinamis
-                    scheduleCycle: $('input[name="schedule_cycle"]').val(),
+                    schedule_name: $('input[name="schedule_name"]').val(),
+                    relay_id: $('input[name="relay_id"]').val(),
+                    schedule_date: $('#scheduleDate').val(),
+                    schedule_time: scheduleTime,  // array dinamis
+                    schedule_cycle: $('input[name="schedule_cycle"]').val(),
                 };
                 const selectedFrequency = parseInt($('#selectDynamicInput').val());
                 if (scheduleTime.length !== selectedFrequency) {
@@ -307,17 +323,13 @@
                     return;
                 }
                 if (confirm("Apakah anda yakin semua data sudah terisi dengan benar?")) {
-                    const data = new FormData();
-                    data.append('_token', '{{ csrf_token() }}');
-                    data.append('schedule_name', formData.scheduleName);
-                    data.append('relay_id', formData.relayId);
-                    data.append('schedule_date', formData.scheduleDate);
-                    data.append('schedule_time', formData.scheduleTime);
-                    data.append('schedule_cycle', formData.scheduleCycle);
-
                     fetch("{{ url('/api/create/schedule/data') }}", {
                         method: 'POST',
-                        body: data
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
                     })
                     .then(response => {
                         if (!response.ok) {
@@ -342,7 +354,6 @@
                                 $('#scheduleName').val('');
                                 $('#relayId').val('');
                                 $('#scheduleDate').val(null).trigger('change');
-                                $('#combinedScheduleDate').val('');
                                 $('#selectDynamicInput').val('1').trigger('change');
                                 $('#dynamicInput').empty();
                             }, 2000);
@@ -377,6 +388,32 @@
                 }
             });
 
+            function generateEditTimeInputs(count, existingTimes = []) {
+                $('#editDynamicInput').empty();
+                for (let i = 0; i < count; i++) {
+                    let value = existingTimes[i] ?? '';
+
+                    // Bersihkan jika ada tanda kutip atau bracket
+                    if (typeof value === 'string') {
+                        value = value.replace(/[\[\]"]/g, '').trim();
+                    }
+                    $('#editDynamicInput').append(`
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Jam Siram ${i + 1}</label>
+                                <input type="time" class="form-control" name="edit_schedule_time[]" value="${value}">
+                            </div>
+                        </div>
+                    `);
+                }
+            }
+            $('#editSelectDynamicInput').on('change', function () {
+                const count = parseInt($(this).val());
+                if (!isNaN(count)) {
+                    generateEditTimeInputs(count);
+                }
+            });
+
             let currentScheduleId = null;
             $('#scheduleTable').on('click', '.btn-edit', function () {
                 currentScheduleId = $(this).data('id');
@@ -387,26 +424,19 @@
                 })
                 .then(res => res.json())
                 .then(res => {
-                    const data = res.data; // ambil objek di dalam "data"
+                    const data = res.data;
                     $('#editScheduleName').val(data.schedule_name);
                     $('#editRelayId').val(data.relay_id);
-                    $('#editSelectDynamicInput').val(data.schedule_cycle).trigger('change');
 
-                    const times = data.schedule_time.replace(/"/g, '').split(',');
-                    $('#editDynamicInput').empty();
-                    times.forEach((time, i) => {
-                        $('#editDynamicInput').append(`
-                            <div class="col-md-3">
-                                <div class="form-group">
-                                    <label>Jam Siram ${i + 1}</label>
-                                    <input type="time" class="form-control" name="edit_schedule_time[]" value="${time}">
-                                </div>
-                            </div>
-                        `);
-                    });
-                    const dates = data.schedule_date.replace(/"/g, '').split(',');
+                    const cycle = parseInt(data.schedule_cycle);
+                    const times = JSON.parse(data.schedule_time); // array waktu
+                    $('#editSelectDynamicInput').val(cycle);
+                    generateEditTimeInputs(cycle, times);
+
+                    const dates = JSON.parse(data.schedule_date); // array hari
                     $('#editScheduleDate').val(dates).trigger('change');
                 })
+
 
                 .catch(err => {
                     console.error(err);
@@ -418,11 +448,8 @@
                 currentScheduleId = null;
                 $('#editScheduleName').val('');
                 $('#editRelayId').val('');
-                // reset select2
                 $('#editScheduleDate').val(null).trigger('change');
-                // reset select biasa
                 $('#editSelectDynamicInput').val('1').trigger('change');
-                // reset dynamic input
                 $('#editDynamicInput').empty();
             });
 
@@ -431,37 +458,88 @@
                     alert('ID jadwal tidak ditemukan');
                     return;
                 }
-                let times = [];
-                $('input[name="edit_schedule_time[]"]').each(function () {
-                    times.push($(this).val());
-                });
-                const payload = {
-                    schedule_name: $('#editScheduleName').val(),
-                    relay_id: $('#editRelayId').val(),
-                    schedule_date: $('#editScheduleDate').val(),
-                    schedule_time: times,
-                    schedule_cycle: $('#editSelectDynamicInput').val()
-                };
-                fetch(`{{ url('/api/update/schedule/data') }}/${currentScheduleId}`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Accept': 'application/json'
-                    },
-                    body: JSON.stringify(payload)
-                })
-                .then(res => res.json())
-                .then(res => {
-                    if (res.success) {
-                        $('#modalEdit').modal('hide');
-                        table.ajax.reload(null, false);
-                        alert('Data berhasil diperbarui');
+                let editScheduleTime = [];
+                $('input[name="edit_schedule_time[]"]').each(function() {
+                    const value = $(this).val();
+                    if (value) {
+                        editScheduleTime.push(value);
                     }
-                })
-                .catch(err => {
-                    console.error(err);
-                    alert('Gagal update data');
                 });
+
+                const editSelectedFrequency = parseInt($('#editSelectDynamicInput').val());
+                if (editScheduleTime.length !== editSelectedFrequency) {
+                    alert('Jumlah jam penyiraman tidak sesuai dengan frekuensi penyiraman yang dipilih!');
+                    return;
+                }
+                if (confirm("Apakah anda yakin semua data sudah terisi dengan benar?")) {
+                    const editData = {
+                        schedule_name: $('#editScheduleName').val(),
+                        relay_id: $('#editRelayId').val(),
+                        schedule_date: $('#editScheduleDate').val(),
+                        schedule_time: editScheduleTime,
+                        schedule_cycle: $('#editSelectDynamicInput').val()
+                    };
+                    fetch(`{{ url('/api/update/schedule/data') }}/${currentScheduleId}`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Accept': 'application/json'
+                        },
+                        body: JSON.stringify(editData)
+                    })
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Network response was not ok');
+                            $('#modalHeader').text('Error');
+                            $('#modalText').text(`Network response was not ok.`);
+                            $('#modalAlert').modal('show');
+                        }
+                        return response.json();
+                    })
+                    .then(editData => {
+                        // Success handling
+                        if (editData.success) {
+                            const successMessage = editData.success;
+                            const text_modal = `<div class="modal-text"><h5>${successMessage}</h5> <img class="rounded-circle icon-image" src="{{asset('/assets/images/icons/success.png')}}" alt=""></div>`;
+                            $('#modalHeader').text('Success');
+                            $('#modalText').html(text_modal);
+                            $('#modalAlert').modal('show');
+                            setTimeout(function() {
+                                $('#modalAlert').modal('hide');
+                                $('#modalEdit').modal('hide');
+                                 // Reset form setelah sukses
+                                $('#editScheduleName').val('');
+                                $('#editRelayId').val('');
+                                $('#editScheduleDate').val(null).trigger('change');
+                                $('#editSelectDynamicInput').val('1').trigger('change');
+                                $('#dynamicInput').empty();
+                            }, 2000);
+                        }
+                    })
+                    .catch(error => {
+                        // Error handling
+                        console.error('Error:', error);
+                        if (editData.error && error.response.editData) {
+                            const warningMessage = editData.error;
+                            const text_modal = `<div class="modal-text">><h5>${warningMessage}></h5> <img class="rounded-circle icon-image" src="{{asset('/assets/images/icons/warning.png')}}" alt=""></div>`;
+                            $('#modalHeader').text('Failed');
+                            $('#modalText').html(text_modal);
+                            $('#modalAlert').modal('show');
+                            setTimeout(function() {
+                                $('#modalAlert').modal('hide');
+                            }, 2000);
+                        } else {
+                            $('#modalHeader').text('Error');
+                            $('#modalText').text('Terjadi kesalahan saat mengirim data.');
+                            $('#modalAlert').modal('show');
+                            setTimeout(function() {
+                                $('#modalAlert').modal('hide');
+                            }, 2000);
+                        }
+                    });
+                } else {
+                    // User cancelled, do nothing
+                }
             });
 
             // Fungsi menghapus data schedule

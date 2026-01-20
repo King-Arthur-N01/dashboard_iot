@@ -46,6 +46,9 @@ Route::get('/sensor/data/error', function (Request $request) {
     ]);
 });
 
+// API to garden data
+Route::get('read/garden/data', [GardenDataController::class, 'readGardenData']);
+
 // API to schedule data
 Route::post('/create/schedule/data', [GardenDataController::class, 'createScheduleData']);
 Route::post('/update/schedule/data/{id}', [GardenDataController::class, 'updateScheduleData']);

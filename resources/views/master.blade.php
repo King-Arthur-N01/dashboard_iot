@@ -19,7 +19,9 @@
         <!--Header START-->
         <div class="app-header header-shadow">
             <div class="app-header__logo">
-                <div class="logo-src"></div>
+                <div class="">
+                    <img class="custom-app-logo" src="{{asset('/assets/images/logo-meta.png')}}">
+                </div>
                 <div class="header__pane ml-auto">
                     <div>
                         <button type="button" class="hamburger close-sidebar-btn hamburger--elastic"
@@ -173,8 +175,9 @@
                                                                     <div class="widget-subheading opacity-8">A short profile description</div>
                                                                 </div>
                                                                 <div class="widget-content-right mr-2">
-                                                                    <button class="btn-pill btn-shadow btn-shine btn btn-focus">Logout
-                                                                    </button>
+                                                                    <a class="btn-pill btn-shadow btn-shine btn btn-focus" href="{{route('logout')}}">
+                                                                        Logout
+                                                                    </a>
                                                                 </div>
                                                             </div>
                                                         </div>

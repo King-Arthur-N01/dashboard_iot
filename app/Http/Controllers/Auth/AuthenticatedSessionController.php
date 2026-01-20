@@ -33,7 +33,7 @@ class AuthenticatedSessionController extends Controller
         $check_if_garden_registered = DB::table('garden_data')->exists();
 
         if (!$check_if_garden_registered) {
-            return redirect()->route('page.register.garden');
+            return redirect()->route('page.create.garden');
         } else {
             return redirect()->intended(route('dashboard', absolute: false));
         }
@@ -50,6 +50,6 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect('/');
+        return redirect()->route('login');
     }
 }

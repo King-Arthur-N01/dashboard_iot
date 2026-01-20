@@ -20059,6 +20059,11 @@ legend {
     background: rgba(255,255,255,.2)
 }
 
+.custom-app-logo {
+    height: 100px;
+    width: 170px;
+}
+
 .app-logo {
     height: 23px;
     width: 97px;

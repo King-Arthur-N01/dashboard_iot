@@ -25,7 +25,7 @@ Route::middleware('auth')->group(function () {
 Route::get('/create/garden', function () {
     return view('layouts.garden_page.create_garden');
 })->name('page.create.garden');
-Route::post('/create/garden/data', [GardenDataController::class, 'createGardenData'])->name('create.garden');
+Route::post('/create/garden/data', [GardenDataController::class, 'registerGardenData'])->name('create.garden');
 
 Route::get('/update/garden', function () {
     return view('layouts.garden_page.update_garden');

@@ -24,7 +24,7 @@ class GardenDataController extends Controller
     public function registerGardenData(Request $request)
     {
         try {
-            dd($request->all());
+            // dd($request->all());
             $request->validate([
                 'garden_name' => 'required',
                 'garden_desc' => 'required',
@@ -104,6 +104,8 @@ class GardenDataController extends Controller
                 'schedule_cycle' => 'required',
             ]);
 
+            $GardenId = GardenData::latest('id')->first()->id;
+
             // Simpan data jadwal ke database
             $StoreScheduleData = new ScheduleData();
             $StoreScheduleData->schedule_name = $request->input('schedule_name');
@@ -111,6 +113,7 @@ class GardenDataController extends Controller
             $StoreScheduleData->schedule_date = json_encode($request->input('schedule_date'));
             $StoreScheduleData->schedule_time = json_encode($request->input('schedule_time'));
             $StoreScheduleData->schedule_cycle = $request->input('schedule_cycle');
+            $StoreScheduleData->garden_id = $GardenId;
             $StoreScheduleData->save();
 
             return response()->json(['success' => 'Jadwal Penyiraman Berhasil Ditambahkan!']);

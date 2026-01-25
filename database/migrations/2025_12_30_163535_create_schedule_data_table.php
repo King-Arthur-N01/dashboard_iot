@@ -18,6 +18,7 @@ return new class extends Migration
             $table->json('schedule_date');
             $table->json('schedule_time');
             $table->integer('schedule_cycle');
+            $table->integer('relay_id');
             $table->timestamps();
         });
     }

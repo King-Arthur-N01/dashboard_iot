@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\RelayData;
+use App\Models\RelayStatus;
 use App\Http\Requests\StoreRelayDataRequest;
 use App\Http\Requests\UpdateRelayDataRequest;
 use Illuminate\Http\JsonResponse;
@@ -45,15 +46,16 @@ class RelayDataController extends Controller
     public function statusRelayData(): JsonResponse
     {
         try {
-            $data = RelayData::latest()->first();
+            $data = RelayStatus::latest()->first();
 
             return response()->json([
                 'relay1_status' => $data->relay_1_status ?? 'N/A',
                 'relay2_status' => $data->relay_2_status ?? 'N/A',
                 'updated_at' => $data->created_at ?? now(),
             ]);
+
         } catch (\Exception $e) {
-            Log::error('Error fetching machine data: ' . $e->getMessage());
+            Log::error('Error fetching data: ' . $e->getMessage());
             return response()->json(['error' => 'Error fetching data'], 500);
         }
     }
@@ -64,7 +66,7 @@ class RelayDataController extends Controller
             $from = Carbon::now('UTC')->subDay();
             $to   = Carbon::now('UTC');
 
-            $logs = RelayData::whereBetween('created_at', [$from, $to])
+            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
                 ->orderBy('created_at')
                 ->get();
 
@@ -85,7 +87,6 @@ class RelayDataController extends Controller
                 if ($log->relay_1_status === 1 && $active['relay_1'] === null) {
                     $active['relay_1'] = $time;
                 }
-
                 if ($log->relay_1_status === 0 && $active['relay_1']) {
                     $duration = $active['relay_1']->diffInSeconds($time);
 
@@ -93,7 +94,6 @@ class RelayDataController extends Controller
                         'start'    => $active['relay_1']->format('H:i:s'),
                         'duration' => $duration, // DETIK
                     ];
-
                     $active['relay_1'] = null;
                 }
 
@@ -101,14 +101,12 @@ class RelayDataController extends Controller
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
                 }
-
                 if ($log->relay_2_status === 0 && $active['relay_2']) {
                     $duration = $active['relay_2']->diffInSeconds($time);
                     $result['relay_2'][] = [
                         'start'    => $active['relay_2']->format('H:i:s'),
                         'duration' => $duration,
                     ];
-
                     $active['relay_2'] = null;
                 }
             }
@@ -122,17 +120,123 @@ class RelayDataController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRelayDataRequest $request)
+    public function lastWeekRelayData (): JsonResponse
     {
-        //
+        try {
+            $from = Carbon::now('UTC')->subDay(7);
+            $to   = Carbon::now('UTC');
+
+            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
+                ->orderBy('created_at')
+                ->get();
+
+            $result = [
+                'range'   => 'last_week',
+                'relay_1' => [],
+                'relay_2' => [],
+            ];
+
+            $active = [
+                'relay_1' => null,
+                'relay_2' => null,
+            ];
+
+            foreach ($logs as $log) {
+                $time = $log->created_at->timezone('Asia/Jakarta');
+                // ===== RELAY 1 =====
+                if ($log->relay_1_status === 1 && $active['relay_1'] === null) {
+                    $active['relay_1'] = $time;
+                }
+                if ($log->relay_1_status === 0 && $active['relay_1']) {
+                    $duration = $active['relay_1']->diffInSeconds($time);
+
+                    $result['relay_1'][] = [
+                        'start'    => $active['relay_1']->format('H:i:s'),
+                        'duration' => $duration, // DETIK
+                    ];
+                    $active['relay_1'] = null;
+                }
+
+                // ===== RELAY 2 =====
+                if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
+                    $active['relay_2'] = $time;
+                }
+                if ($log->relay_2_status === 0 && $active['relay_2']) {
+                    $duration = $active['relay_2']->diffInSeconds($time);
+                    $result['relay_2'][] = [
+                        'start'    => $active['relay_2']->format('H:i:s'),
+                        'duration' => $duration,
+                    ];
+                    $active['relay_2'] = null;
+                }
+            }
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Failed to build chart data'], 500);
+        }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(RelayData $relayData)
+    public function lastMonthRelayData(RelayData $relayData)
     {
-        //
+        try {
+            $from = Carbon::now('UTC')->subDays(30);
+            $to   = Carbon::now('UTC');
+
+            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
+                ->orderBy('created_at')
+                ->get();
+
+            $result = [
+                'range'   => 'last_week',
+                'relay_1' => [],
+                'relay_2' => [],
+            ];
+
+            $active = [
+                'relay_1' => null,
+                'relay_2' => null,
+            ];
+
+            foreach ($logs as $log) {
+                $time = $log->created_at->timezone('Asia/Jakarta');
+                // ===== RELAY 1 =====
+                if ($log->relay_1_status === 1 && $active['relay_1'] === null) {
+                    $active['relay_1'] = $time;
+                }
+                if ($log->relay_1_status === 0 && $active['relay_1']) {
+                    $duration = $active['relay_1']->diffInSeconds($time);
+
+                    $result['relay_1'][] = [
+                        'start'    => $active['relay_1']->format('H:i:s'),
+                        'duration' => $duration, // DETIK
+                    ];
+                    $active['relay_1'] = null;
+                }
+
+                // ===== RELAY 2 =====
+                if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
+                    $active['relay_2'] = $time;
+                }
+                if ($log->relay_2_status === 0 && $active['relay_2']) {
+                    $duration = $active['relay_2']->diffInSeconds($time);
+                    $result['relay_2'][] = [
+                        'start'    => $active['relay_2']->format('H:i:s'),
+                        'duration' => $duration,
+                    ];
+                    $active['relay_2'] = null;
+                }
+            }
+            return response()->json($result);
+
+        } catch (\Exception $e) {
+            Log::error($e->getMessage());
+            return response()->json(['error' => 'Failed to build chart data'], 500);
+        }
     }
 
     /**

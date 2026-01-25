@@ -476,18 +476,18 @@
             title: 'Monitoring Durasi Relay',
             colors: ['#c12e2e', '#2ecc71'] // Merah untuk Relay 1, Hijau untuk Relay 2
         });
-        // renderRelayChart({
-        //     elementId: '#chartRelay7d',
-        //     apiUrl: relayApi.week,
-        //     title: 'Monitoring Durasi Relay',
-        //     colors: ['#c12e2e', '#2ecc71']
-        // });
-        // renderRelayChart({
-        //     elementId: '#chartRelay30d',
-        //     apiUrl: relayApi.month,
-        //     title: 'Monitoring Durasi Relay',
-        //     colors: ['#c12e2e', '#2ecc71']
-        // });
+        renderRelayChart({
+            elementId: '#chartRelay7d',
+            apiUrl: relayApi.week,
+            title: 'Monitoring Durasi Relay',
+            colors: ['#c12e2e', '#2ecc71']
+        });
+        renderRelayChart({
+            elementId: '#chartRelay30d',
+            apiUrl: relayApi.month,
+            title: 'Monitoring Durasi Relay',
+            colors: ['#c12e2e', '#2ecc71']
+        });
     });
 </script>
 @endpush

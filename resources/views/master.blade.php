@@ -175,9 +175,12 @@
                                                                     <div class="widget-subheading opacity-8">A short profile description</div>
                                                                 </div>
                                                                 <div class="widget-content-right mr-2">
-                                                                    <a class="btn-pill btn-shadow btn-shine btn btn-focus" href="{{route('logout')}}">
+                                                                    <a class="btn-pill btn-shadow btn-shine btn btn-focus" href="{{ route('logout') }}" onclick="event.preventDefault(); if(confirm('Apakah anda ingin logout?')) { document.getElementById('logout-form').submit(); }">
                                                                         Logout
                                                                     </a>
+                                                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                                                        @csrf
+                                                                    </form>
                                                                 </div>
                                                             </div>
                                                         </div>

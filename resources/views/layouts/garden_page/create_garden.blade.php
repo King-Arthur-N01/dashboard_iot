@@ -48,12 +48,7 @@
                                         </li>
                                         <li>
                                             <a href="#step-3">
-                                                <em>3</em><span>Buat Kondisi Penyiraman</span>
-                                            </a>
-                                        </li>
-                                        <li>
-                                            <a href="#step-4">
-                                                <em>4</em><span>Setup Selesai!</span>
+                                                <em>3</em><span>Setup Selesai!</span>
                                             </a>
                                         </li>
                                     </ul>
@@ -103,8 +98,7 @@
                                                 <div class="col-md-6">
                                                     <div class="position-relative form-group">
                                                         <label for="scheduleDate" class="">Waktu Siram</label>
-                                                        <input name="schedule_date" id="combineScheduleDate" type="hidden">
-                                                        <select multiple="multiple" class="multiselect-dropdown form-control" id="scheduleDate">
+                                                        <select multiple="multiple" class="multiselect-dropdown form-control" id="scheduleDate" name="schedule_date[]">
                                                             <option value="senin">Senin</option>
                                                             <option value="selasa">Selasa</option>
                                                             <option value="rabu">Rabu</option>
@@ -142,196 +136,6 @@
                                             </div>
                                         </div>
                                         <div id="step-3">
-                                            <div class="form-row">
-                                                <div class="col-md-12">
-                                                    <div class="position-relative form-group">
-                                                        <label for="conditionName" class="">
-                                                            Nama Kondisi
-                                                            <span class="text-danger">*</span>
-                                                            <small>Biarkan Jika Ingin Nilai Default</small>
-                                                        </label>
-                                                        <input class="form-control" name="condition_name" id="conditionName" type="text" placeholder="Ex : Default Value">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="temperatureMin" class="">Suhu (°C)</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-right"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="temperature_min" id="temperatureMin" type="number" placeholder="Ex : 25°C">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Suhu Minimum (°C) Kurang Dari >
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="temperatureAvg" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-window-minimize"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="temperature_avg" id="temperatureAvg" type="number" placeholder="Ex : 25-35°C">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Suhu Rata-Rata (°C) Diantara ~
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="temperatureMax" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-left"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="temperature_max" id="temperatureMax" type="number" placeholder="Ex : 35°C">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Suhu Maksimum (°C) Lebih dari <
-                                                    </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="moistureMin" class="">Kelembaban Rh(%)</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-right"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="moisture_min" id="moistureMin" type="number" placeholder="Ex : 30%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Minimum (%) Kurang Dari >
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="moistureAvg" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-window-minimize"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="moisture_avg" id="moistureAvg" type="number" placeholder="Ex : 30-60%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Rata-Rata (%) Diantara ~
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="moistureMax" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-left"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="moisture_max" id="moistureMax" type="number" placeholder="Ex : 60%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Maksimum (%) Lebih dari <
-                                                    </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="lightMin" class="">Cahaya Cd(%)</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-right"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="light_min" id="lightMin" type="number" placeholder="Ex : 40%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Cahaya Minimum (%) Kurang Dari >
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="lightAvg" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-window-minimize"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="light_avg" id="lightAvg" type="number" placeholder="Ex : 40-70%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Cahaya Rata-Rata (%) Diantara ~
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="lightMax" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-left"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="light_max" id="lightMax" type="number" placeholder="Ex : 70%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Cahaya Maksimum (%) Lebih dari <
-                                                    </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-row">
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="soilMin" class="">Kelembaban Tanah (%)</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-right"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="soil_min" id="soilMin" type="number" placeholder="Ex : 40%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Tanah Minimum (%) Kurang Dari >
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="soilAvg" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-window-minimize"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="soil_avg" id="soilAvg" type="number" placeholder="Ex : 40-70%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Tanah Rata-Rata (%) Diantara ~
-                                                    </small>
-                                                </div>
-                                                <div class="mb-2 mr-sm-2 mb-sm-0 position-relative form-group">
-                                                    <label for="soilMax" class="">&nbsp;</label>
-                                                    <div class="input-group">
-                                                        <div class="input-group-prepend">
-                                                            <div class="input-group-text">
-                                                                <i class="fa fa-fw fa-chevron-left"></i>
-                                                            </div>
-                                                        </div>
-                                                        <input class="form-control" name="soil_max" id="soilMax" type="number" placeholder="Ex : 70%">
-                                                    </div>
-                                                    <small class="form-text text-muted">
-                                                        Kelembaban Tanah Maksimum (%) Lebih dari <
-                                                    </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div id="step-4">
                                             <div class="no-results">
                                                 <div class="swal2-icon swal2-success swal2-animate-success-icon">
                                                     <div class="swal2-success-circular-line-left" style="background-color: rgb(255, 255, 255);"></div>
@@ -407,14 +211,6 @@
     <script src="{{ asset('js/scripts-init/guided-tours.js') }}"></script>
     <script>
         $(document).ready(function() {
-            $(document).ready(function() {
-                // Mendengarkan perubahan pada select multiple dengan id="scheduleDate"
-                $('#scheduleDate').on('change', function() {
-                    var selectedValues = $(this).val();
-                    var jsonArray = JSON.stringify(selectedValues);
-                    $('#combineScheduleDate').val(jsonArray);
-                });
-            });
             function updateDynamicInputs() {
                 const selectedValue = parseInt($('#selectDynamicInput').val());
                 document.getElementById("scheduleCycle").value = selectedValue;

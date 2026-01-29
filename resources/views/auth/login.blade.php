@@ -53,7 +53,9 @@
                         </div>
                         <div class="h-100 d-flex bg-white justify-content-center align-items-center col-md-12 col-lg-8">
                             <div class="mx-auto app-login-box col-sm-12 col-md-10 col-lg-9">
-                                <div class="app-logo"></div>
+                                <div class="">
+                                    <img class="custom-app-logo" src="{{ asset('/assets/images/logo-meta.png') }}">
+                                </div>
                                 <h4 class="mb-0">
                                     <span class="d-block">Welcome back,</span>
                                     <span>Please sign in to your account.</span></h4>

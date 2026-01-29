@@ -78,22 +78,6 @@
                                 </div>
                             </div>
                         </div>
-                        {{-- loading overlay --}}
-                        <div class="body-block-example-1 d-none">
-                            <div class="loader bg-transparent no-shadow p-0">
-                                <div class="ball-grid-pulse">
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                    <div class="bg-white"></div>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                     <div class="row mb-4 g-3">
                         <div class="col-sm-12 col-md-6 col-xl-6">
@@ -102,7 +86,7 @@
                                     <h6 class="card-header">watering schedule</h6>
                                 </div>
                                 <div>
-                                    <ul class="list-group list-group-flush">
+                                    {{-- <ul class="list-group list-group-flush">
                                         <li class="list-group-item">
                                             <div class="widget-content p-0">
                                                 <div class="widget-content-wrapper">
@@ -136,7 +120,18 @@
                                                 </div>
                                             </div>
                                         </li>
-                                    </ul>
+                                    </ul> --}}
+                                    <table id="scheduleTable" class="table table-hover table-striped table-bordered">
+                                        <thead>
+                                            <tr>
+                                                <th>No</th>
+                                                <th>Waktu Siram</th>
+                                                <th>Cycle Time</th>
+                                                <th>Jam Siram</th>
+                                                <th>No. Relay</th>
+                                            </tr>
+                                        </thead>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -200,9 +195,9 @@
                                         </div>
                                     </li>
                                 </ul>
-                                <button class="btn btn-primary mr-2 mb-2 block-element-btn-example-1">
+                                {{-- <button class="btn btn-primary mr-2 mb-2 block-element-btn-example-1">
                                     Elements Example 1
-                                </button>
+                                </button> --}}
                             </div>
                         </div>
                     </div>
@@ -227,6 +222,56 @@
 <script src="{{asset('js/vendors/form-components/toggle-switch.js')}}"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
+        let overlay = $('.loading-overlay');
+        overlay.appendTo('body');
+        // Set automatic soft refresh table
+        setInterval(function() {
+            overlay.addClass('is-active');
+            table.ajax.reload(null, false);
+            table.on('draw.dt', function() {
+                overlay.removeClass('is-active');
+            });
+        }, 60000);
+        // kode javascript untuk menginisiasi datatable dan berfungsi sebagai dynamic table
+        const table = $('#scheduleTable').DataTable({
+            "searching": false,
+            "paging":   false,
+            "ordering": false,
+            "info":     false,
+            processing: true,
+            serverSide: false,
+            ajax: {
+                url: "{{ url('/api/read/schedule/data') }}",
+                type: "GET",
+                dataType: "json",
+                dataSrc: "data"  // Default: response langsung sebagai array
+            },
+            columns: [
+                { data: 'number', render: function(data, type, row, meta) { return meta.row + 1; } },  // Auto-numbering
+                {
+                    data: 'schedule_date',
+                    render: function(data) {
+                        const dates = JSON.parse(data)  // Misal: ["senin", "selasa"]
+                        return Array.isArray(dates) ? dates.join(', ') : data;
+                    }
+                },
+                {
+                    data: 'schedule_cycle',
+                    render: function(data) {
+                        return data + 'X/Hari';
+                    }
+                },
+                {
+                    data: 'schedule_time',
+                    render: function(data) {
+                        const times = JSON.parse(data); // hasil: ["08:00","12:00","17:00"]
+                        return Array.isArray(times) ? times.join(', ') : data;
+                    }
+                },
+                { data: 'relay_id' }
+            ]
+        });
+
         let lastData = null;
         let lastRelayStatus = null;
 
@@ -384,6 +429,13 @@
         setInterval(updatePumpStatus, 5000);
     });
 </script>
+<!--DataTables-->
+<script src="{{asset('js/vendors/datatables/jquery.dataTables.min.js')}}"></script>
+<script src="{{asset('js/vendors/datatables/dataTables.bootstrap4.min.js')}}"></script>
+<!--Bootstrap Tables-->
+<script src="{{asset('js/vendors/tables.js')}}"></script>
+<!--Tables Init-->
+<script src="{{asset('js/scripts-init/tables.js')}}"></script>
 <!--Circle Progress -->
 <script src="{{asset('js/vendors/circle-progress.js')}}"></script>
 <script src="{{asset('js/scripts-init/circle-progress.js')}}"></script>

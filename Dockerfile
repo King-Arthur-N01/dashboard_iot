@@ -24,7 +24,7 @@ COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 RUN composer install --no-dev --optimize-autoloader
 
 # Expose port Apache
-EXPOSE 8080
+EXPOSE 80
 
 # Jalankan Apache
 CMD ["apache2-foreground"]

@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: laravel-app
+    container_name: dashboard-iot
     ports:
       - "8080:80"
     volumes:

@@ -8,6 +8,9 @@ RUN apt-get update && apt-get install -y \
 
 # Aktifkan mod_rewrite untuk Laravel
 RUN a2enmod rewrite
+RUN php artisan storage:link || true
+
+COPY ./docker/vhost.conf /etc/apache2/sites-available/000-default.conf
 
 # Salin project Laravel ke dalam container
 COPY . /var/www/html

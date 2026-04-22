@@ -1,0 +1,31 @@
+version: '3.9'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: dashboard-iot-app
+    ports:
+      - "8080:80"
+    volumes:
+      - .:/var/www/html:Z
+      - ./storage:/var/www/html/storage:Z
+      - ./bootstrap:/var/www/html/bootstrap:Z
+    user: "www-data"
+    environment:
+      - APP_ENV=local
+      - APP_DEBUG=true
+      - APP_KEY=base64:your-app-key-here
+      - DB_CONNECTION=mysql
+      - DB_HOST=192.168.1.5     # ← IP host MariaDB kamu (karena network=host)
+      - DB_PORT=3306
+      - DB_DATABASE=iot_db
+      - DB_USERNAME=iot_user        # atau user lain yang kamu buat
+      - DB_PASSWORD=iot123
+    command: >
+      bash -c "apache2ctl -D FOREGROUND"
+    networks:
+      - laravel
+networks:
+  laravel:

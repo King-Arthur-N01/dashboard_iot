@@ -94,7 +94,7 @@ class GardenDataController extends Controller
     public function createScheduleData(Request $request)
     {
         try {
-            dd($request->all());
+            // dd($request->all());
             $request->validate([
                 'schedule_name' => 'required',
                 'relay_id' => 'required',

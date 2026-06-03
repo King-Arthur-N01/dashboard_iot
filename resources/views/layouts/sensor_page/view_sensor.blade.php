@@ -49,12 +49,7 @@
                     </li>
                     <li class="nav-item">
                         <a role="tab" class="nav-link" data-toggle="tab" href="#tabSoilMoisture">
-                            <span class="nav-text">Tab Soil Moisture</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a role="tab" class="nav-link" data-toggle="tab" href="#tabRainfall">
-                            <span class="nav-text">Tab Rainfall Density</span>
+                            <span class="nav-text">Tab soilmoisture</span>
                         </a>
                     </li>
                 </ul>
@@ -159,31 +154,6 @@
                             </div>
                         </div>
                     </div>
-                    <div class="tab-pane" id="tabRainfall" role="tabpanel">
-                        <div class="card-header-tab card-header-tab-animation card-header">
-                            <div class="card-header-title">
-                                <h5 class="card-title">Rainfall Density Summary</h5>
-                            </div>
-                            <ul class="nav">
-                                <li class="nav-item"><a data-toggle="tab" href="#tab-rain-last-24h" class="active nav-link">Last 24 Hour</a></li>
-                                <li class="nav-item"><a data-toggle="tab" href="#tab-rain-last-7d" class="nav-link second-tab-toggle">Last 7 Days</a></li>
-                                <li class="nav-item"><a data-toggle="tab" href="#tab-rain-last-30d" class="nav-link second-tab-toggle">Last 30 Days</a></li>
-                            </ul>
-                        </div>
-                        <div class="card-body">
-                            <div class="tab-content">
-                                <div class="tab-pane fade show active" id="tab-rain-last-24h">
-                                    <div id="chartRainfall24h"></div>
-                                </div>
-                                <div class="tab-pane fade" id="tab-rain-last-7d">
-                                    <div id="chartRainfall7d"></div>
-                                </div>
-                                <div class="tab-pane fade" id="tab-rain-last-30d">
-                                    <div id="chartRainfall30d"></div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
@@ -200,174 +170,221 @@
 <script src="{{asset('js/vendors/moment.js')}}"></script>
 
 <script>
-    (function() {
-        'use strict';
-        // Tunggu SEMUA dependencies loaded
-        function waitForDependencies(callback) {
-            if (window.jQuery && window.ApexCharts && window.bootstrap) {
-                callback();
-            } else {
-                setTimeout(() => waitForDependencies(callback), 100);
+    document.addEventListener("DOMContentLoaded", function () {
+        const sensorApi = {
+            day:   "{{ url('/api/sensor/data/last/day') }}",
+            week:  "{{ url('/api/sensor/data/last/week') }}",
+            month: "{{ url('/api/sensor/data/last/month') }}"
+        };
+        const chartCache = {}; // cache chart instance
+        const dataCache  = {}; // cache API data
+
+        function renderSensorChart({
+            elementId,
+            apiUrl,
+            field,
+            title,
+            color
+        }) {
+            // Pengecekan elemen: Pastikan elemen ada di DOM
+            const element = document.querySelector(elementId);
+            if (!element) {
+                console.error(`Element ${elementId} not found. Skipping render.`);
+                return;  // Jangan lanjutkan jika elemen tidak ada
             }
-        }
-        waitForDependencies(function() {
-            initializeDashboardCharts();
-        });
-        function initializeDashboardCharts() {
-            const sensorApi = {
-                day: "{{ url('/api/sensor/data/last/day') }}",
-                week: "{{ url('/api/sensor/data/last/week') }}",
-                month: "{{ url('/api/sensor/data/last/month') }}"
-            };
-            const chartCache = {};
-            const chartsConfig = {
-                // Temperature
-                'chartTemperature24h': { api: 'day', field: 'avg_temp', title: 'Temperature', color: '#c12e2e' },
-                'chartTemperature7d': { api: 'week', field: 'avg_temp', title: 'Temperature', color: '#c12e2e' },
-                'chartTemperature30d': { api: 'month', field: 'avg_temp', title: 'Temperature', color: '#c12e2e' },
-                // Humidity
-                'chartHumidify24h': { api: 'day', field: 'avg_humi', title: 'Humidity', color: '#29bdd1' },
-                'chartHumidify7d': { api: 'week', field: 'avg_humi', title: 'Humidity', color: '#29bdd1' },
-                'chartHumidify30d': { api: 'month', field: 'avg_humi', title: 'Humidity', color: '#29bdd1' },
-                // Luminescence
-                'chartLuminescence24h': { api: 'day', field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' },
-                'chartLuminescence7d': { api: 'week', field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' },
-                'chartLuminescence30d': { api: 'month', field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' },
-                // Soil Moisture
-                'chartSoilMoisture24h': { api: 'day', field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' },
-                'chartSoilMoisture7d': { api: 'week', field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' },
-                'chartSoilMoisture30d': { api: 'month', field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' },
-                // Rainfall
-                'chartRainfall24h': { api: 'day', field: 'avg_rain', title: 'Rainfall', color: '#8E24AA' },
-                'chartRainfall7d': { api: 'week', field: 'avg_rain', title: 'Rainfall', color: '#8E24AA' },
-                'chartRainfall30d': { api: 'month', field: 'avg_rain', title: 'Rainfall', color: '#8E24AA' }
-            };
-            function safeGetElement(id) {
-                // id sudah tanpa #, langsung gunakan
-                const element = document.getElementById(id);
-                if (!element) {
-                    console.warn(`Element #${id} not found in DOM`);
-                }
-                return element;
+            // Jika chart sudah ada di cache → skip
+            if (chartCache[elementId]) {
+                console.log(`Chart for ${elementId} already exists. Skipping render.`);
+                return;
             }
-            function createChart(containerId, config) {
-                const element = safeGetElement(containerId);
-                if (!element) return null;
-                if (chartCache[containerId]) {
-                    console.log(`Chart ${containerId} already exists`);
-                    return chartCache[containerId];
-                }
-                const apiUrl = sensorApi[config.api];
-                const options = {
-                    chart: {
-                        type: 'area',
-                        height: 300,
-                        toolbar: { show: false },
-                        animations: { enabled: true, speed: 800 }
-                    },
-                    series: [{
-                        name: config.title,
-                        data: []
-                    }],
-                    xaxis: {
-                        categories: [],
-                        labels: { rotate: -45, style: { fontSize: '12px' } }
-                    },
-                    yaxis: {
-                        min: 0,
-                        max: 100,
-                        // labels: { formatter: v => `${v}%` }
-                    },
-                    colors: [config.color],
-                    stroke: { width: 2, curve: 'smooth' },
-                    fill: { type: 'gradient', gradient: { shadeIntensity: 1, opacityFrom: 0.7, opacityTo: 0.3 } },
-                    dataLabels: { enabled: false },
-                    grid: { borderColor: '#f1f3f4' },
-                    noData: {
-                        text: 'Loading chart data...',
-                        align: 'center',
-                        verticalAlign: 'middle',
-                        fontSize: '16px',
-                        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto'
+            // Fetch data dari API
+            fetch(apiUrl)
+                .then(res => {
+                    if (!res.ok) {
+                        throw new Error(`HTTP error! Status: ${res.status}`);
                     }
-                };
-                try {
-                    const chart = new ApexCharts(element, options);
-                    chart.render();
-                    chartCache[containerId] = chart;
-
-                    // Load data setelah render
-                    loadChartData(chart, apiUrl, config.field, config.title);
-
-                    console.log(`✅ Chart created: ${containerId}`);
-                    return chart;
-                } catch (error) {
-                    console.error(`❌ Chart creation failed for ${containerId}:`, error);
-                    return null;
-                }
-            }
-            function loadChartData(chart, apiUrl, field, title) {
-                fetch(apiUrl)
-                    .then(response => {
-                        if (!response.ok) throw new Error(`HTTP ${response.status}`);
-                        return response.json();
-                    })
-                    .then(data => {
-                        if (!data?.data || !Array.isArray(data.data)) {
-                            throw new Error('Invalid data format');
-                        }
-                        const labels = data.data.map(item => item.label || 'N/A');
-                        const values = data.data.map(item => {
-                            const value = item[field];
-                            return typeof value === 'number' && !isNaN(value) ? value : 0;
-                        });
-                        chart.updateOptions({
-                            series: [{ name: title, data: values }],
-                            xaxis: { categories: labels }
-                        });
-                    })
-                    .catch(error => {
-                        console.error(`Data load failed for ${title}:`, error);
-                        chart.updateOptions({
-                            noData: {
-                                text: 'Failed to load data\nPlease check connection',
-                                fontSize: '14px'
-                            }
-                        });
+                    return res.json();
+                })
+                .then(res => {
+                    // Validasi data: Pastikan res.data ada dan array
+                    if (!res || !res.data || !Array.isArray(res.data)) {
+                        throw new Error(`Invalid data structure from API for ${elementId}`);
+                    }
+                    // Ekstrak labels dan values
+                    const labels = res.data.map(d => d.label);
+                    const values = res.data.map(d => {
+                        const val = d[field];
+                        // Pastikan value adalah number, jika tidak, set ke 0 atau null
+                        return typeof val === 'number' ? val : 0;
                     });
-            }
-            // Render semua charts yang VISIBLE saat ini
-            function renderVisibleCharts() {
-                Object.keys(chartsConfig).forEach(containerId => {
-                    const element = safeGetElement(containerId);
-                    if (element && isElementVisible(element)) {
-                        createChart(containerId, chartsConfig[containerId]);
+                    // Opsi chart ApexCharts
+                    const options = {
+                        chart: {
+                            type: 'area',
+                            height: 300,
+                            toolbar: { show: false }
+                        },
+                        series: [{
+                            name: title,
+                            data: values
+                        }],
+                        xaxis: {
+                            categories: labels,
+                            labels: { rotate: -45 }
+                        },
+                        yaxis: {
+                            min: 0,
+                            max: 100
+                        },
+                        colors: [color],
+                        stroke: {
+                            width: 2
+                        },
+                        dataLabels: { enabled: false }
+                    };
+                    // Buat dan render chart
+                    try {
+                        chartCache[elementId] = new ApexCharts(element, options);
+                        chartCache[elementId].render();
+                        console.log(`Chart rendered for ${elementId}`);
+                    } catch (chartError) {
+                        console.error(`Error rendering chart for ${elementId}:`, chartError);
                     }
+                })
+                .catch(err => {
+                    console.error(`Error fetching or processing data for ${elementId}:`, err);
                 });
-            }
-            function isElementVisible(element) {
-                return element.offsetParent !== null;
-            }
-            // Event handler untuk tab changes (SAFE)
-            $(document).on('shown.bs.tab', 'a[data-toggle="tab"]', function(e) {
-                const targetTabId = $(e.target).attr('href');
-                if (!targetTabId) return;
-
-                // Tunggu tab fully shown
-                setTimeout(() => {
-                    $(targetTabId).find('[id^="chart"]').each(function() {
-                        const chartId = this.id;
-                        if (chartsConfig[chartId] && !chartCache[chartId]) {
-                            createChart(chartId, chartsConfig[chartId]);
-                        }
-                    });
-                }, 150);
-            });
-            // Initial render setelah short delay
-            setTimeout(renderVisibleCharts, 300);
-            console.log('Dashboard charts initialized');
         }
-    })();
+        // Render chart untuk tab aktif default (Temperature)
+        renderChartsForTab('#tabTemperature');
+
+        // Fungsi helper untuk render chart berdasarkan tab
+        function renderChartsForTab(tabId) {
+            if (tabId === '#tabTemperature') {
+                renderSensorChart({ elementId: '#chartTemperature24h', apiUrl: sensorApi.day, field: 'avg_temp', title: 'Temperature', color: '#c12e2e' });
+                renderSensorChart({ elementId: '#chartTemperature7d', apiUrl: sensorApi.week, field: 'avg_temp', title: 'Temperature', color: '#c12e2e' });
+                renderSensorChart({ elementId: '#chartTemperature30d', apiUrl: sensorApi.month, field: 'avg_temp', title: 'Temperature', color: '#c12e2e' });
+            } else if (tabId === '#tabHumidity') {
+                renderSensorChart({ elementId: '#chartHumidify24h', apiUrl: sensorApi.day, field: 'avg_humi', title: 'Humidity', color: '#29bdd1' });
+                renderSensorChart({ elementId: '#chartHumidify7d', apiUrl: sensorApi.week, field: 'avg_humi', title: 'Humidity', color: '#29bdd1' });
+                renderSensorChart({ elementId: '#chartHumidify30d', apiUrl: sensorApi.month, field: 'avg_humi', title: 'Humidity', color: '#29bdd1' });
+            } else if (tabId === '#tabLuminescence') {
+                renderSensorChart({ elementId: '#chartLuminescence24h', apiUrl: sensorApi.day, field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' });
+                renderSensorChart({ elementId: '#chartLuminescence7d', apiUrl: sensorApi.week, field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' });
+                renderSensorChart({ elementId: '#chartLuminescence30d', apiUrl: sensorApi.month, field: 'avg_lumi', title: 'Luminescence', color: '#dfd32b' });
+            } else if (tabId === '#tabSoilMoisture') {
+                renderSensorChart({ elementId: '#chartSoilMoisture24h', apiUrl: sensorApi.day, field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' });
+                renderSensorChart({ elementId: '#chartSoilMoisture7d', apiUrl: sensorApi.week, field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' });
+                renderSensorChart({ elementId: '#chartSoilMoisture30d', apiUrl: sensorApi.month, field: 'avg_soil', title: 'Soil Moisture', color: '#22d348' });
+            }
+        }
+
+        // Event listener untuk switch tab (menggunakan Bootstrap)
+        $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
+            const targetTab = $(e.target).attr('href');
+            renderChartsForTab(targetTab);
+        });
+
+        // Temperature default → 24h
+        renderSensorChart({
+            elementId: '#chartTemperature24h',
+            apiUrl: sensorApi.day,
+            field: 'avg_temp',
+            title: 'Temperature',
+            color: '#c12e2e'
+        });
+        // Temperature default → 7d
+        renderSensorChart({
+            elementId: '#chartTemperature7d',
+            apiUrl: sensorApi.week,
+            field: 'avg_temp',
+            title: 'Temperature',
+            color: '#c12e2e'
+        });
+        // Temperature default → 30d
+        renderSensorChart({
+            elementId: '#chartTemperature30d',
+            apiUrl: sensorApi.month,
+            field: 'avg_temp',
+            title: 'Temperature',
+            color: '#c12e2e'
+        });
+
+        // Humidity default → 24h
+        renderSensorChart({
+            elementId: '#chartHumidify24h',
+            apiUrl: sensorApi.day,
+            field: 'avg_humi',
+            title: 'Humidity',
+            color: '#29bdd1'
+        });
+        // Humidity default → 7d
+        renderSensorChart({
+            elementId: '#chartHumidify7d',
+            apiUrl: sensorApi.week,
+            field: 'avg_humi',
+            title: 'Humidity',
+            color: '#29bdd1'
+        });
+        // Humidity default → 30d
+        renderSensorChart({
+            elementId: '#chartHumidify30d',
+            apiUrl: sensorApi.month,
+            field: 'avg_humi',
+            title: 'Humidity',
+            color: '#29bdd1'
+        });
+
+        // Luminescence default → 24h
+        renderSensorChart({
+            elementId: '#chartLuminescence24h',
+            apiUrl: sensorApi.day,
+            field: 'avg_lumi',
+            title: 'Luminescence',
+            color: '#dfd32b'
+        });
+        // Luminescence default → 7d
+        renderSensorChart({
+            elementId: '#chartLuminescence7d',
+            apiUrl: sensorApi.week,
+            field: 'avg_lumi',
+            title: 'Luminescence',
+            color: '#dfd32b'
+        });
+        // Luminescence default → 30d
+        renderSensorChart({
+            elementId: '#chartLuminescence30d',
+            apiUrl: sensorApi.month,
+            field: 'avg_lumi',
+            title: 'Luminescence',
+            color: '#dfd32b'
+        });
+
+        // Soilmoisture default → 24h
+        renderSensorChart({
+            elementId: '#chartSoilMoisture24h',
+            apiUrl: sensorApi.day,
+            field: 'avg_soil',
+            title: 'Soil Moisture',
+            color: '#22d348'
+        });
+        // Soilmoisture default → 7d
+        renderSensorChart({
+            elementId: '#chartSoilMoisture7d',
+            apiUrl: sensorApi.week,
+            field: 'avg_soil',
+            title: 'Soil Moisture',
+            color: '#22d348'
+        });
+        // Soilmoisture default → 30d
+        renderSensorChart({
+            elementId: '#chartSoilMoisture30d',
+            apiUrl: sensorApi.month,
+            field: 'avg_soil',
+            title: 'Soil Moisture',
+            color: '#22d348'
+        });
+    });
 </script>
 <script>
     // Relay History Chart
@@ -396,9 +413,7 @@
                     // Mengambil semua timestamp unik dari kedua relay dan mengurutkannya
                     const allLabels = [...new Set([
                         ...(res.relay_1 || []).map(item => item.start),
-                        ...(res.relay_2 || []).map(item => item.start),
-                        ...(res.relay_3 || []).map(item => item.start),
-                        ...(res.relay_4 || []).map(item => item.start),
+                        ...(res.relay_2 || []).map(item => item.start)
                     ])].sort();
                     // --- 2. PEMETAAN DATA KE SERIES ---
                     const mapData = (relayArray) => {
@@ -409,9 +424,7 @@
                     };
                     const seriesData = [
                         { name: 'Relay 1', data: mapData(res.relay_1) },
-                        { name: 'Relay 2', data: mapData(res.relay_2) },
-                        { name: 'Relay 3', data: mapData(res.relay_3) },
-                        { name: 'Relay 4', data: mapData(res.relay_4) }
+                        { name: 'Relay 2', data: mapData(res.relay_2) }
                     ];
                     // --- 3. KONFIGURASI APEXCHARTS ---
                     const options = {
@@ -424,7 +437,7 @@
                             text: title,
                             align: 'left'
                         },
-                        // colors: colors || ['#c12e2e', '#2e7dc1', '#0277BD', '#F57C00'],
+                        colors: colors || ['#c12e2e', '#2e7dc1'], // Default warna jika tidak diisi
                         plotOptions: {
                             bar: {
                                 horizontal: false,
@@ -461,30 +474,24 @@
             elementId: '#chartRelay24h',
             apiUrl: relayApi.day,
             title: 'Monitoring Durasi Relay',
-            colors: ['#c12e2e', '#2ecc71', '#0277BD', '#F57C00']
+            colors: ['#c12e2e', '#2ecc71'] // Merah untuk Relay 1, Hijau untuk Relay 2
         });
         renderRelayChart({
             elementId: '#chartRelay7d',
             apiUrl: relayApi.week,
             title: 'Monitoring Durasi Relay',
-            colors: ['#c12e2e', '#2ecc71', '#0277BD', '#F57C00']
+            colors: ['#c12e2e', '#2ecc71']
         });
         renderRelayChart({
             elementId: '#chartRelay30d',
             apiUrl: relayApi.month,
             title: 'Monitoring Durasi Relay',
-            colors: ['#c12e2e', '#2ecc71', '#0277BD', '#F57C00']
+            colors: ['#c12e2e', '#2ecc71']
         });
     });
 </script>
 @endpush
 
 @push('style')
-<style>
-    .chart-container {
-        min-height: 300px;
-        width: 100%;
-        position: relative;
-    }
-</style>
+
 @endpush

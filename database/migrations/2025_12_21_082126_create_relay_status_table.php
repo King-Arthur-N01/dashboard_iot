@@ -15,8 +15,11 @@ return new class extends Migration
             $table->id();
             $table->boolean('relay_1_status');
             $table->boolean('relay_2_status');
+<<<<<<< HEAD
             $table->boolean('relay_3_status');
             $table->boolean('relay_4_status');
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             $table->integer('relay_id');
             $table->time('duration');
             $table->string('note')->nullable();

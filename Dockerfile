@@ -18,6 +18,7 @@ COPY . /var/www/html
 
 WORKDIR /var/www/html
 
+<<<<<<< HEAD
 # Copy entrypoint script
 COPY docker/php-fpm/entrypoint.sh /usr/local/bin/entrypoint.sh
 RUN chmod +x /usr/local/bin/entrypoint.sh
@@ -25,6 +26,8 @@ RUN chmod +x /usr/local/bin/entrypoint.sh
 # Use the entrypoint
 ENTRYPOINT ["entrypoint.sh"]
 
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
 # Beri izin pada storage dan cache Laravel
 RUN chown -R www-data:www-data storage bootstrap/cache
 

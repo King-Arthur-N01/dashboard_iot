@@ -28,10 +28,18 @@ class GardenDataController extends Controller
             $request->validate([
                 'garden_name' => 'required',
                 'garden_desc' => 'required',
+<<<<<<< HEAD
                 'schedule_name' => 'required',
                 'relay_id' => 'required',
                 'schedule_date' => 'required:array',
                 'schedule_time' => 'required:array',
+=======
+                'garden_pic' => 'image|mimes:png,jpg,jpeg|max:8192',
+                'schedule_name' => 'required',
+                'relay_id' => 'required',
+                'schedule_date' => 'required',
+                'schedule_time' => 'required',
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 'schedule_cycle' => 'required'
             ]);
 
@@ -61,6 +69,7 @@ class GardenDataController extends Controller
             $ScheduleId = ScheduleData::latest('id')->first()->id;
 
             // kondisi default
+<<<<<<< HEAD
             // $StoreRelayData = new RelayData();
             // $StoreRelayData->condition_name = 'Default Value';
             // $StoreRelayData->temp_condition = ["high" => 35, "med_min" => 25, "med_max" => 35, "low" => 25];
@@ -70,6 +79,17 @@ class GardenDataController extends Controller
             // $StoreRelayData->rain_condition = ["heavy" => 0.1, "mid_max" => 0.4, "mid_min" => 0.1, "light_max" => 0.6, "light_min" => 0.4, "none" => 0.6];
             // $StoreRelayData->schedule_id    = $ScheduleId;
             // $StoreRelayData->save();
+=======
+            $StoreRelayData = new RelayData();
+            $StoreRelayData->condition_name = 'Default Value';
+            $StoreRelayData->temp_condition = ["high" => 35, "med_min" => 25, "med_max" => 35, "low" => 25];
+            $StoreRelayData->humi_condition = ["high" => 60, "med_min" => 45, "med_max" => 60, "low" => 45];
+            $StoreRelayData->lumi_condition = ["high" => 70, "med_min" => 40, "med_max" => 70, "low" => 40];
+            $StoreRelayData->soil_condition = ["high" => 70, "med_min" => 40, "med_max" => 70, "low" => 40];
+            $StoreRelayData->rain_condition = ["heavy" => 0.1, "mid_max" => 0.4, "mid_min" => 0.1, "light_max" => 0.6, "light_min" => 0.4, "none" => 0.6];
+            $StoreRelayData->schedule_id    = $ScheduleId;
+            $StoreRelayData->save();
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
 
             return redirect()->route('dashboard', [
                 'success' => 'Kebun berhasil ditambahkan'

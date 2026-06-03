@@ -5,7 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+<<<<<<< HEAD
     container_name: dashboard-iot-app
+=======
+    image: kingarthurn01/dashboard-iot:latest
+    container_name: dashboard-iot
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
     ports:
       - "8080:80"
     volumes:

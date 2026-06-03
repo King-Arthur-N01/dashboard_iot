@@ -51,8 +51,11 @@ class RelayDataController extends Controller
             return response()->json([
                 'relay1_status' => $data->relay_1_status ?? 'N/A',
                 'relay2_status' => $data->relay_2_status ?? 'N/A',
+<<<<<<< HEAD
                 'relay3_status' => $data->relay_3_status ?? 'N/A',
                 'relay4_status' => $data->relay_4_status ?? 'N/A',
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 'updated_at' => $data->created_at ?? now(),
             ]);
 
@@ -76,15 +79,21 @@ class RelayDataController extends Controller
                 'range'   => 'last_24_hours',
                 'relay_1' => [],
                 'relay_2' => [],
+<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
+<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -102,6 +111,10 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -114,6 +127,7 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
+<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -138,6 +152,8 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 
@@ -163,16 +179,22 @@ class RelayDataController extends Controller
                 'range'   => 'last_week',
                 'relay_1' => [],
                 'relay_2' => [],
+<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
 
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
+<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -190,6 +212,10 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -202,6 +228,7 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
+<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -226,6 +253,8 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 
@@ -252,15 +281,21 @@ class RelayDataController extends Controller
                 'range'   => 'last_week',
                 'relay_1' => [],
                 'relay_2' => [],
+<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
+<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -278,6 +313,10 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
+<<<<<<< HEAD
+=======
+
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -290,6 +329,7 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
+<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -314,6 +354,8 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
+=======
+>>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 

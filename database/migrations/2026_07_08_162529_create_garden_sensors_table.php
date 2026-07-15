@@ -11,15 +11,13 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('relay_data', function (Blueprint $table) {
+        Schema::create('garden_sensors', function (Blueprint $table) {
             $table->id();
-            $table->boolean('relay_1_status');
-            $table->boolean('relay_2_status');
-            $table->boolean('relay_3_status');
-            $table->boolean('relay_4_status');
-            $table->integer('relay_id');
-            $table->time('duration');
-            $table->string('note')->nullable();
+            $table->decimal('garden_temp', 5, 2)->nullable();
+            $table->decimal('garden_humi', 5, 2)->nullable();
+            $table->decimal('garden_lumi', 5, 2)->nullable();
+            $table->decimal('garden_soil', 5, 2)->nullable();
+            $table->decimal('garden_rain', 5, 2)->nullable();
             $table->integer('device_id')->nullable();
             $table->timestamps();
         });
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('relay_data');
+        Schema::dropIfExists('garden_sensors');
     }
 };

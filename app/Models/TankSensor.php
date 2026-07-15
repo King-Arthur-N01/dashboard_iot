@@ -5,14 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class SensorData extends Model
+class TankSensor extends Model
 {
     /** @use HasFactory<\Database\Factories\SensorDataFactory> */
     use HasFactory;
+    protected $table = 'tank_sensors';
     protected $fillable = [
-        'temp',
-        'humi',
-        'lumi',
-        'soil'
+        'tank_temp',
+        'tank_humi',
+        'tank_vol',
+        'tank_stat',
+        'device_id',
     ];
 }

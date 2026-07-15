@@ -2,25 +2,29 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\SensorData;
-use App\Http\Requests\StoreSensorDataRequest;
-use App\Http\Requests\UpdateSensorDataRequest;
+use App\Models\GardenSensor;
+use App\Models\RelayData;
+use App\Http\Requests\StoreGardenSensorRequest;
+use App\Http\Requests\UpdateGardenSensorRequest;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\DB;
+use PhpMqtt\Client\Facades\MQTT;
 use Carbon\Carbon;
 
-class SensorDataController extends Controller
+class GardenSensorController extends Controller
 {
     public function latestSensorData(): JsonResponse
     {
-        $data = SensorData::latest()->first();
-
+        $data = GardenSensor::latest()->first();
         return response()->json([
-            'temperature' => $data->temp ?? 'N/A',
-            'humidity' => $data->humi ?? 'N/A',
-            'light' => $data->lumi ?? 'N/A',
-            'soil' => $data->soil ?? 'N/A',
-            'updated_at' => $data->created_at ?? now(),
+            'temperature' => $data->garden_temp ?? 'N/A',
+            'humidity'    => $data->garden_humi ?? 'N/A',
+            'light'       => $data->garden_lumi ?? 'N/A',
+            'soil'        => $data->garden_soil ?? 'N/A',
+            'rain'        => $data->garden_rain ?? 'N/A',
+            'updated_at'  => $data->created_at ?? now(),
         ]);
     }
 
@@ -40,7 +44,7 @@ class SensorDataController extends Controller
         $from = Carbon::now()->subDay(); // UTC
         $to   = Carbon::now();
 
-        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
+        $rows = GardenSensor::whereBetween('created_at', [$from, $to])->get();
 
         $grouped = $rows->groupBy(fn ($item) =>
             $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d H')
@@ -85,7 +89,7 @@ class SensorDataController extends Controller
         $from = Carbon::now()->subDays(7);
         $to   = Carbon::now();
 
-        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
+        $rows = GardenSensor::whereBetween('created_at', [$from, $to])->get();
 
         $grouped = $rows->groupBy(fn ($item) =>
             $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d')
@@ -127,7 +131,7 @@ class SensorDataController extends Controller
         $from = Carbon::now()->subDays(30);
         $to   = Carbon::now();
 
-        $rows = SensorData::whereBetween('created_at', [$from, $to])->get();
+        $rows = GardenSensor::whereBetween('created_at', [$from, $to])->get();
 
         $grouped = $rows->groupBy(fn ($item) =>
             $item->created_at->timezone('Asia/Jakarta')->format('Y-m-d')
@@ -175,7 +179,7 @@ class SensorDataController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreSensorDataRequest $request)
+    public function store(StoreGardenSensorRequest $request)
     {
         //
     }
@@ -183,7 +187,7 @@ class SensorDataController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(SensorData $sensorData)
+    public function show(GardenSensor $gardenSensor)
     {
         //
     }
@@ -191,7 +195,7 @@ class SensorDataController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(SensorData $sensorData)
+    public function edit(GardenSensor $gardenSensor)
     {
         //
     }
@@ -199,7 +203,7 @@ class SensorDataController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSensorDataRequest $request, SensorData $sensorData)
+    public function update(UpdateGardenSensorRequest $request, GardenSensor $gardenSensor)
     {
         //
     }
@@ -207,7 +211,7 @@ class SensorDataController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(SensorData $sensorData)
+    public function destroy(GardenSensor $gardenSensor)
     {
         //
     }

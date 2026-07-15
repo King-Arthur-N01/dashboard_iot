@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SensorDataController;
+use App\Http\Controllers\GardenSensorController;
 use App\Http\Controllers\GardenDataController;
 use App\Http\Controllers\RelayDataController;
 use App\Http\Controllers\ProfileController;
@@ -32,6 +32,6 @@ Route::get('/update/garden', function () {
 })->name('page.update.garden');
 Route::post('/update/garden/data', [GardenDataController::class, 'updateGardenData'])->name('update.garden');
 
-Route::get('/sensor/report', [SensorDataController::class, 'summarySensorData'])->name('page.sensor.report');
+Route::get('/sensor/report', [GardenSensorController::class, 'summarySensorData'])->name('page.sensor.report');
 
 require __DIR__.'/auth.php';

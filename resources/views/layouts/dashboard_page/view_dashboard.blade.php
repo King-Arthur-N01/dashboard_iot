@@ -16,13 +16,13 @@
                 <div class="card-body">
                     <!-- Garden Visualization -->
                     <div class="garden mb-4">
-                        <img class="image-header" id="imageHeader" alt="">
+                        <img class="image-header" id="imageHeader" src="{{asset('/assets/images/dropdown-header/dashboard_image.jpg')}}" alt="">
                     </div>
                     <div class="row mb-4 g-3 element-block-example" id="realtimeData">
                         <div class="col-12">
                             <h5 class="card-title">Realtime Monitoring</h5>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-xl-3">
+                        <div class="col-sm-6 col-md-3 col-xl-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-danger"><i class="bi bi-thermometer"></i></div>
@@ -36,7 +36,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-xl-3">
+                        <div class="col-sm-6 col-md-3 col-xl-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-info"><i class="bi bi-moisture"></i></div>
@@ -50,7 +50,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-xl-3">
+                        <div class="col-sm-6 col-md-3 col-xl-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-alternate"><i class="bi bi-sun-fill"></i></div>
@@ -64,7 +64,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-sm-6 col-md-3 col-xl-3">
+                        <div class="col-sm-6 col-md-3 col-xl-2">
                             <div class="card stat-card p-3">
                                 <div class="d-flex align-items-center gap-3">
                                     <div class="stat-icon btn-hover-shine btn-success"><i class="bi bi-water"></i></div>
@@ -78,6 +78,20 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="col-sm-6 col-md-3 col-xl-2">
+                            <div class="card stat-card p-3">
+                                <div class="d-flex align-items-center gap-3">
+                                    <div class="stat-icon btn-hover-shine btn-primary"><i class="bi bi-droplet-fill"></i></div>
+                                    <div>
+                                        <h6 class="menu-header-subtitle">Rainfall</h6>
+                                        <div class="widget-numbers">
+                                            <h6 class="mb-0 custom-text" id="rainfallValue"></h6>
+                                            <div id="wigetRainfall"> {{-- Wiget deskripsi perubahan di sini --}}</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                     <div class="row mb-4 g-3">
                         <div class="col-sm-12 col-md-6 col-xl-6">
@@ -86,41 +100,6 @@
                                     <h6 class="card-header">watering schedule</h6>
                                 </div>
                                 <div>
-                                    {{-- <ul class="list-group list-group-flush">
-                                        <li class="list-group-item">
-                                            <div class="widget-content p-0">
-                                                <div class="widget-content-wrapper">
-                                                    <div class="widget-content-left center-elem mr-2"><i class="pe-7s-play"></i></div>
-                                                    <div class="widget-content-left">
-                                                        <h6 class="widget-heading">Starting On :</h6>
-                                                        <p class="">2024-01-01 08:00 AM</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="widget-content p-0">
-                                                <div class="widget-content-wrapper">
-                                                    <div class="widget-content-left center-elem mr-2"><i class="pe-7s-timer"></i></div>
-                                                    <div class="widget-content-left">
-                                                        <h6 class="widget-heading">Duration :</h6>
-                                                        <p class="">10 Minute</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li class="list-group-item">
-                                            <div class="widget-content p-0">
-                                                <div class="widget-content-wrapper">
-                                                    <div class="widget-content-left center-elem mr-2"><i class="pe-7s-repeat"></i></div>
-                                                    <div class="widget-content-left">
-                                                        <h6 class="widget-heading">Repeat Every :</h6>
-                                                        <p class="">Day</p>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </li>
-                                    </ul> --}}
                                     <table id="scheduleTable" class="table table-hover table-striped table-bordered">
                                         <thead>
                                             <tr>
@@ -152,7 +131,6 @@
                                         </div>
                                     </li>
                                 </ul>
-
                                 <ul class="todo-list-wrapper list-group list-group-flush">
                                     <li class="list-group-item">
                                         <div class="widget-content p-0">
@@ -162,6 +140,34 @@
                                                 </div>
                                                 <div class="widget-content-right">
                                                     <span id="pumpStatus2" class="mb-2 mr-2 badge badge-secondary">....</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="todo-list-wrapper list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Water Pump 3 Status :</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <span id="pumpStatus3" class="mb-2 mr-2 badge badge-secondary">....</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="todo-list-wrapper list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Water Pump 4 Status :</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <span id="pumpStatus4" class="mb-2 mr-2 badge badge-secondary">....</span>
                                                 </div>
                                             </div>
                                         </div>
@@ -195,9 +201,34 @@
                                         </div>
                                     </li>
                                 </ul>
-                                {{-- <button class="btn btn-primary mr-2 mb-2 block-element-btn-example-1">
-                                    Elements Example 1
-                                </button> --}}
+                                <ul class="todo-list-wrapper list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Water Pump 3 On/Off :</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <input class="water-pump-toggle" id="waterPump3" data-relay-id="3" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <ul class="todo-list-wrapper list-group list-group-flush">
+                                    <li class="list-group-item">
+                                        <div class="widget-content p-0">
+                                            <div class="widget-content-wrapper">
+                                                <div class="widget-content-left flex2">
+                                                    <div class="widget-heading">Water Pump 4 On/Off :</div>
+                                                </div>
+                                                <div class="widget-content-right">
+                                                    <input class="water-pump-toggle" id="waterPump4" data-relay-id="4" type="checkbox" data-toggle="toggle" data-onstyle="success" data-offstyle="danger">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
                             </div>
                         </div>
                     </div>
@@ -268,7 +299,9 @@
                         return Array.isArray(times) ? times.join(', ') : data;
                     }
                 },
-                { data: 'relay_id' }
+                {
+                    data: 'relay_id'
+                }
             ]
         });
 
@@ -319,23 +352,22 @@
                     document.getElementById('humiValue').textContent = data.humidity + " (Rh)";
                     document.getElementById('lumiValue').textContent = data.light + " %";
                     document.getElementById('soilValue').textContent = data.soil + " %";
+                    document.getElementById('rainfallValue').textContent = data.rain + " mm";
                     // Hitung dan tampilkan perubahan jika ada data sebelumnya
                     if (lastData) {
-                        updateChangeDisplay('wigetTemp', parseFloat(data.temperature), parseFloat(
-                            lastData.temperature), 'Temperature');
-                        updateChangeDisplay('wigetHumi', parseFloat(data.humidity), parseFloat(lastData
-                            .humidity), 'Humidity');
-                        updateChangeDisplay('wigetLumi', parseFloat(data.light), parseFloat(lastData
-                            .light), 'Light');
-                        updateChangeDisplay('wigetSoil', parseFloat(data.soil), parseFloat(lastData
-                            .soil), 'Soil');
+                        updateChangeDisplay('wigetTemp', parseDecimal(data.temperature), parseDecimal(lastData.temperature), 'Temperature');
+                        updateChangeDisplay('wigetHumi', parseDecimal(data.humidity), parseDecimal(lastData.humidity), 'Humidity');
+                        updateChangeDisplay('wigetLumi', parseDecimal(data.light), parseDecimal(lastData.light), 'Light');
+                        updateChangeDisplay('wigetSoil', parseDecimal(data.soil), parseDecimal(lastData.soil), 'Soil');
+                        updateChangeDisplay('wigetRainfall', parseDecimal(data.rain), parseDecimal(lastData.rain), 'Rainfall');
                     }
                     // Simpan data saat ini sebagai lastData untuk perbandingan selanjutnya
                     lastData = {
                         temperature: data.temperature,
                         humidity: data.humidity,
                         light: data.light,
-                        soil: data.soil
+                        soil: data.soil,
+                        rainfall: data.rain
                     };
                 })
                 .catch(err => console.error('Error fetching sensor data:', err));
@@ -344,17 +376,22 @@
         fetchLatestSensorData();
         // Jalankan ulang tiap 1 menit
         setInterval(fetchLatestSensorData, 60000);
-
         const fetchGardenData = () => {
             fetch("{{ url('/api/read/garden/data') }}")
                 .then(response => response.json())
                 .then(data => {
-                    gardenData = data.data[0]; // Mengakses elemen pertama dari array data
-                    document.getElementById('gardenName').textContent = gardenData.garden_name;
-                    document.getElementById('imageHeader').src = "/storage/" + gardenData.garden_picture;
+                    if (data.data.length === 0) {
+                        // Jika array kosong
+                        document.getElementById('gardenName').textContent = "Belum buat Kebun";
+                    } else {
+                        // Jika ada data, ambil elemen pertama
+                        let gardenData = data.data[0];
+                        document.getElementById('gardenName').textContent = gardenData.garden_name;
+                    }
                 })
                 .catch(err => console.error('Error fetching sensor data:', err));
         };
+
         const fetchScheduleData = () => {
             fetch("{{ url('/api/read/schedule/data') }}")
                 .then(response => response.json())
@@ -400,9 +437,12 @@
                 .then(data => {
                     const pump1 = $('#pumpStatus1');
                     const pump2 = $('#pumpStatus2');
+                    const pump3 = $('#pumpStatus3');
+                    const pump4 = $('#pumpStatus4');
                     const toggle1 = $('#waterPump1');
                     const toggle2 = $('#waterPump2');
-
+                    const toggle3 = $('#waterPump3');
+                    const toggle4 = $('#waterPump4');
                     // Pump 1
                     const isPump1On = data.relay1_status == 1;
                     pump1.text(isPump1On ? 'on' : 'off')
@@ -412,7 +452,6 @@
                         .prop('checked', isPump1On)
                         .bootstrapToggle(isPump1On ? 'on' : 'off');
                     toggle1.data('syncing', false);
-
                     // Pump 2
                     const isPump2On = data.relay2_status == 1;
                     pump2.text(isPump2On ? 'on' : 'off')
@@ -422,6 +461,26 @@
                         .prop('checked', isPump2On)
                         .bootstrapToggle(isPump2On ? 'on' : 'off');
                     toggle2.data('syncing', false);
+                    // Pump 3
+                    const isPump3On = data.relay3_status == 1;
+                    pump3.text(isPump3On ? 'on' : 'off')
+                        .removeClass('badge-success badge-danger')
+                        .addClass(isPump3On ? 'badge-success' : 'badge-danger');
+                    toggle3.data('syncing', true)
+                        .prop('checked', isPump3On)
+                        .bootstrapToggle(isPump3On ? 'on' : 'off');
+                    toggle3.data('syncing', false);
+                    // Pump 4
+                    const isPump4On = data.relay4_status == 1;
+                    pump4.text(isPump4On ? 'on' : 'off')
+                        .removeClass('badge-success badge-danger')
+                        .addClass(isPump4On ? 'badge-success' : 'badge-danger');
+                    toggle4.data('syncing', true)
+                        .prop('checked', isPump4On)
+                        .bootstrapToggle(isPump4On ? 'on' : 'off');
+                    toggle4.data('syncing', false);
+
+
                 })
                 .catch(err => console.error(err));
         }

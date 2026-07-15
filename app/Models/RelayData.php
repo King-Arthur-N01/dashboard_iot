@@ -9,23 +9,15 @@ class RelayData extends Model
 {
     /** @use HasFactory<\Database\Factories\RelayDataFactory> */
     use HasFactory;
-    // protected $table = 'relay_status';
+    protected $table = 'relay_data';
     protected $fillable = [
-        'condition_name',
-        'temp_condition',
-        'humi_condition',
-        'lumi_condition',
-        'soil_condition',
-        'rain_condition',
         'relay_1_status',
-        'relay_2_status'
+        'relay_2_status',
+        'relay_3_status',
+        'relay_4_status',
+        'relay_id',
+        'duration',
+        'note',
+        'device_id'
     ];
-    protected $casts = [
-    'temp_condition' => 'array',
-    'humi_condition' => 'array',
-    'lumi_condition' => 'array',
-    'soil_condition' => 'array',
-    'rain_condition' => 'array',
-];
-
 }

@@ -5,7 +5,6 @@ namespace Database\Seeders;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-use Illuminate\Database\Seeder\SensorDataSeeder;
 
 class DatabaseSeeder extends Seeder
 {
@@ -19,5 +18,8 @@ class DatabaseSeeder extends Seeder
             'nik' => '11379',
             'password' => bcrypt('admin123'),
         ]);
+
+        $this->call(GardenDataSeeder::class);
+        $this->call(ScheduleDataSeeder::class);
     }
 }

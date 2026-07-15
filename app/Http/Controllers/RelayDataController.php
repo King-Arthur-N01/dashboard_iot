@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\RelayData;
-use App\Models\RelayStatus;
 use App\Http\Requests\StoreRelayDataRequest;
 use App\Http\Requests\UpdateRelayDataRequest;
 use Illuminate\Http\JsonResponse;
@@ -23,8 +22,8 @@ class RelayDataController extends Controller
         ]);
 
         $payload = [
-            'relay' => $request->relay,
-            'relay_id' => $request->relay_id,
+            'relay' => (int) $request->relay,
+            'relay_id' => (int) $request->relay_id,
             'time'  => 0,
             'note'  => $request->relay === 'on'
                 ? 'Menyalakan pompa manual'
@@ -32,7 +31,7 @@ class RelayDataController extends Controller
         ];
 
         MQTT::publish(
-            'relay/data',
+            'farm/tank/1/cmd',
             json_encode($payload),
             0
         );
@@ -46,16 +45,13 @@ class RelayDataController extends Controller
     public function statusRelayData(): JsonResponse
     {
         try {
-            $data = RelayStatus::latest()->first();
+            $data = RelayData::latest()->first();
 
             return response()->json([
                 'relay1_status' => $data->relay_1_status ?? 'N/A',
                 'relay2_status' => $data->relay_2_status ?? 'N/A',
-<<<<<<< HEAD
                 'relay3_status' => $data->relay_3_status ?? 'N/A',
                 'relay4_status' => $data->relay_4_status ?? 'N/A',
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 'updated_at' => $data->created_at ?? now(),
             ]);
 
@@ -71,7 +67,7 @@ class RelayDataController extends Controller
             $from = Carbon::now('UTC')->subDay();
             $to   = Carbon::now('UTC');
 
-            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
+            $logs = RelayData::whereBetween('created_at', [$from, $to])
                 ->orderBy('created_at')
                 ->get();
 
@@ -79,21 +75,15 @@ class RelayDataController extends Controller
                 'range'   => 'last_24_hours',
                 'relay_1' => [],
                 'relay_2' => [],
-<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
-<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -111,10 +101,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -127,7 +113,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
-<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -152,8 +137,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 
@@ -171,7 +154,7 @@ class RelayDataController extends Controller
             $from = Carbon::now('UTC')->subDay(7);
             $to   = Carbon::now('UTC');
 
-            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
+            $logs = RelayData::whereBetween('created_at', [$from, $to])
                 ->orderBy('created_at')
                 ->get();
 
@@ -179,22 +162,16 @@ class RelayDataController extends Controller
                 'range'   => 'last_week',
                 'relay_1' => [],
                 'relay_2' => [],
-<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
 
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
-<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -212,10 +189,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -228,7 +201,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
-<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -253,8 +225,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 
@@ -273,7 +243,7 @@ class RelayDataController extends Controller
             $from = Carbon::now('UTC')->subDays(30);
             $to   = Carbon::now('UTC');
 
-            $logs = RelayStatus::whereBetween('created_at', [$from, $to])
+            $logs = RelayData::whereBetween('created_at', [$from, $to])
                 ->orderBy('created_at')
                 ->get();
 
@@ -281,21 +251,15 @@ class RelayDataController extends Controller
                 'range'   => 'last_week',
                 'relay_1' => [],
                 'relay_2' => [],
-<<<<<<< HEAD
                 'relay_3' => [],
                 'relay_4' => [],
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             $active = [
                 'relay_1' => null,
                 'relay_2' => null,
-<<<<<<< HEAD
                 'relay_3' => null,
                 'relay_4' => null,
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             ];
 
             foreach ($logs as $log) {
@@ -313,10 +277,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_1'] = null;
                 }
-<<<<<<< HEAD
-=======
-
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
                 // ===== RELAY 2 =====
                 if ($log->relay_2_status === 1 && $active['relay_2'] === null) {
                     $active['relay_2'] = $time;
@@ -329,7 +289,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_2'] = null;
                 }
-<<<<<<< HEAD
                 // ===== RELAY 3 =====
                 if ($log->relay_3_status === 1 && $active['relay_3'] === null) {
                     $active['relay_3'] = $time;
@@ -354,8 +313,6 @@ class RelayDataController extends Controller
                     ];
                     $active['relay_4'] = null;
                 }
-=======
->>>>>>> eaa41139bbb2714e5abf9b51a494913ec0c965bd
             }
             return response()->json($result);
 

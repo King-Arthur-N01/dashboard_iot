@@ -11,13 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('sensor_data', function (Blueprint $table) {
+        Schema::create('garden_configs', function (Blueprint $table) {
             $table->id();
-            $table->float('temp', 5)->nullable();
-            $table->float('humi', 5)->nullable();
-            $table->float('lumi', 5)->nullable();
-            $table->float('soil', 5)->nullable();
-            $table->float('rain', 5)->nullable();
+            $table->string('condition_name');
+            $table->json('temp_condition');
+            $table->json('humi_condition');
+            $table->json('lumi_condition');
+            $table->json('soil_condition');
+            $table->json('rain_condition');
             $table->timestamps();
         });
     }
@@ -27,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('sensor_data');
+        Schema::dropIfExists('garden_configs');
     }
 };

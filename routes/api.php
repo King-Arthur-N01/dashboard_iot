@@ -1,6 +1,6 @@
 <?php
 
-use App\Http\Controllers\SensorDataController;
+use App\Http\Controllers\GardenSensorController;
 use App\Http\Controllers\GardenDataController;
 use App\Http\Controllers\RelayDataController;
 use Illuminate\Http\Request;
@@ -26,10 +26,10 @@ Route::get('/user', function (Request $request) {
 // Route::get('/garden/schedule/data', [GardenDataController::class, 'latestSensorData']);
 
 // API report sensor data
-Route::get('/sensor/data/latest', [SensorDataController::class, 'latestSensorData']);
-Route::get('/sensor/data/last/day', [SensorDataController::class, 'lastDaySensorData']);
-Route::get('/sensor/data/last/week', [SensorDataController::class, 'lastWeekSensorData']);
-Route::get('/sensor/data/last/month', [SensorDataController::class, 'lastMonthSensorData']);
+Route::get('/sensor/data/latest', [GardenSensorController::class, 'latestSensorData']);
+Route::get('/sensor/data/last/day', [GardenSensorController::class, 'lastDaySensorData']);
+Route::get('/sensor/data/last/week', [GardenSensorController::class, 'lastWeekSensorData']);
+Route::get('/sensor/data/last/month', [GardenSensorController::class, 'lastMonthSensorData']);
 // API report relay data
 Route::get('/relay/data/last/day', [RelayDataController::class, 'lastDayRelayData']);
 Route::get('/relay/data/last/week', [RelayDataController::class, 'lastWeekRelayData']);

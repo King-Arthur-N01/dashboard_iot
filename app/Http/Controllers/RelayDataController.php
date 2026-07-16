@@ -22,8 +22,8 @@ class RelayDataController extends Controller
         ]);
 
         $payload = [
-            'relay' => (int) $request->relay,
-            'relay_id' => (int) $request->relay_id,
+            'relay' => $request->relay,
+            'relay_id' => $request->relay_id,
             'time'  => 0,
             'note'  => $request->relay === 'on'
                 ? 'Menyalakan pompa manual'

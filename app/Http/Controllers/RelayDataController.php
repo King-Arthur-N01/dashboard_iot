@@ -16,30 +16,35 @@ class RelayDataController extends Controller
 {
     public function manualRelayData(Request $request)
     {
-        $request->validate([
-            'relay' => 'required|in:on,off',
-            'relay_id' => 'required|in:1,2,3,4',
-        ]);
+        try {
+            $request->validate([
+                'relay' => 'required|in:on,off',
+                'relay_id' => 'required|in:1,2,3,4',
+            ]);
 
-        $payload = [
-            'relay' => $request->relay,
-            'relay_id' => $request->relay_id,
-            'time'  => 0,
-            'note'  => $request->relay === 'on'
-                ? 'Menyalakan pompa manual'
-                : 'Mematikan pompa manual'
-        ];
+            $payload = [
+                'relay' => $request->relay,
+                'relay_id' => $request->relay_id,
+                'time'  => 0,
+                'note'  => $request->relay === 'on'
+                    ? 'Menyalakan pompa manual'
+                    : 'Mematikan pompa manual'
+            ];
 
-        MQTT::publish(
-            'farm/tank/1/cmd',
-            json_encode($payload),
-            0
-        );
+            MQTT::publish(
+                'farm/tank/1/cmd',
+                json_encode($payload),
+                0
+            );
 
-        return response()->json([
-            'status' => 'ok',
-            'sent'   => $payload
-        ]);
+            return response()->json([
+                'status' => 'ok',
+                'sent'   => $payload
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error sending MQTT message: ' . $e->getMessage());
+            return response()->json(['error' => 'Failed to send command'], 500);
+        }
     }
 
     public function statusRelayData(): JsonResponse

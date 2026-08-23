@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\GardenSensor;
+use App\Models\SoilSensor;
 use App\Models\RelayData;
 use App\Http\Requests\StoreGardenSensorRequest;
 use App\Http\Requests\UpdateGardenSensorRequest;
@@ -15,17 +16,53 @@ use Carbon\Carbon;
 
 class GardenSensorController extends Controller
 {
-    public function latestSensorData(): JsonResponse
+    public function liveSensorData(Request $request)
     {
-        $data = GardenSensor::latest()->first();
+        try {
+            $data = $request->validate([
+                'suhu' => 'required|numeric',
+                'kelembapan' => 'required|numeric',
+                'cahaya' => 'required|numeric',
+                'hujan' => 'required|numeric',
+                'received_at' => 'nullable|string',
+            ]);
+
+            return response()->json([
+                'status' => 'ok'
+            ]);
+
+        } catch (\Exception $e) {
+            Log::error('Error fetching data: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching data'], 500);
+        }
+    }
+    // public function latestSensorData(): JsonResponse
+    // {
+    //     try {
+    //         $sensor_data = GardenSensor::latest()->first();
+    //         $soil_data = SoilSensor::latest()->first();
+    //         return response()->json([
+    //             'temperature' => $sensor_data->garden_temp ?? 'N/A',
+    //             'humidity'    => $sensor_data->garden_humi ?? 'N/A',
+    //             'light'       => $sensor_data->garden_lumi ?? 'N/A',
+    //             'soil'        => $soil_data->soil_moisture ?? 'N/A',
+    //             'rain'        => $sensor_data->garden_rain ?? 'N/A',
+    //             'updated_at'  => $sensor_data->created_at ?? now(),
+    //         ]);
+    //     } catch (\Exception $e) {
+    //         Log::error('Error fetching latest sensor data: ' . $e->getMessage());
+    //         return response()->json(['error' => 'Error fetching data'], 500);
+    //     }
+    // }
+
+    public function errorSensorData(): JsonResponse
+    {
         return response()->json([
-            'temperature' => $data->garden_temp ?? 'N/A',
-            'humidity'    => $data->garden_humi ?? 'N/A',
-            'light'       => $data->garden_lumi ?? 'N/A',
-            'soil'        => $data->garden_soil ?? 'N/A',
-            'rain'        => $data->garden_rain ?? 'N/A',
-            'updated_at'  => $data->created_at ?? now(),
-        ]);
+            'temperature' => 'Sensor Error',
+            'humidity' => 'Sensor Error',
+                'updated_at'  => now(),
+            ]);
+        }
     }
 
     public function errorSensorData(): JsonResponse
@@ -35,6 +72,7 @@ class GardenSensorController extends Controller
             'humidity' => 'Sensor Error',
             'light' => 'Sensor Error',
             'soil' => 'Sensor Error',
+            'rain' => 'Sensor Error',
             'updated_at' => now(),
         ]);
     }

@@ -344,7 +344,7 @@
         };
 
         const fetchLatestSensorData = () => {
-            fetch("{{ url('/api/sensor/data/latest') }}")
+            fetch("{{ url('/api/sensor/data/live') }}")
                 .then(response => response.json())
                 .then(data => {
                     // Update nilai utama

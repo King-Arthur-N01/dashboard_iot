@@ -2,13 +2,10 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class RelayData extends Model
 {
-    /** @use HasFactory<\Database\Factories\RelayDataFactory> */
-    use HasFactory;
     protected $table = 'relay_data';
     protected $fillable = [
         'relay_1_status',

@@ -26,7 +26,8 @@ Route::get('/user', function (Request $request) {
 // Route::get('/garden/schedule/data', [GardenDataController::class, 'latestSensorData']);
 
 // API report sensor data
-Route::get('/sensor/data/latest', [GardenSensorController::class, 'latestSensorData']);
+Route::get('/sensor/data/live', [GardenSensorController::class, 'liveSensorData']);
+// Route::get('/sensor/data/latest', [GardenSensorController::class, 'latestSensorData']);
 Route::get('/sensor/data/last/day', [GardenSensorController::class, 'lastDaySensorData']);
 Route::get('/sensor/data/last/week', [GardenSensorController::class, 'lastWeekSensorData']);
 Route::get('/sensor/data/last/month', [GardenSensorController::class, 'lastMonthSensorData']);

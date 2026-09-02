@@ -16,52 +16,68 @@ use Carbon\Carbon;
 
 class GardenSensorController extends Controller
 {
-    public function liveSensorData(Request $request)
-    {
-        try {
-            $data = $request->validate([
-                'suhu' => 'required|numeric',
-                'kelembapan' => 'required|numeric',
-                'cahaya' => 'required|numeric',
-                'hujan' => 'required|numeric',
-                'received_at' => 'nullable|string',
-            ]);
-
-            return response()->json([
-                'status' => 'ok'
-            ]);
-
-        } catch (\Exception $e) {
-            Log::error('Error fetching data: ' . $e->getMessage());
-            return response()->json(['error' => 'Error fetching data'], 500);
-        }
-    }
-    // public function latestSensorData(): JsonResponse
+    // public function liveSensorData(Request $request)
     // {
     //     try {
-    //         $sensor_data = GardenSensor::latest()->first();
-    //         $soil_data = SoilSensor::latest()->first();
-    //         return response()->json([
-    //             'temperature' => $sensor_data->garden_temp ?? 'N/A',
-    //             'humidity'    => $sensor_data->garden_humi ?? 'N/A',
-    //             'light'       => $sensor_data->garden_lumi ?? 'N/A',
-    //             'soil'        => $soil_data->soil_moisture ?? 'N/A',
-    //             'rain'        => $sensor_data->garden_rain ?? 'N/A',
-    //             'updated_at'  => $sensor_data->created_at ?? now(),
+    //         $data = $request->validate([
+    //             'suhu' => 'required|numeric',
+    //             'kelembapan' => 'required|numeric',
+    //             'cahaya' => 'required|numeric',
+    //             'hujan' => 'required|numeric',
+    //             'received_at' => 'nullable|string',
     //         ]);
+
+    //         return response()->json([
+    //             'status' => 'ok'
+    //         ]);
+
     //     } catch (\Exception $e) {
-    //         Log::error('Error fetching latest sensor data: ' . $e->getMessage());
+    //         Log::error('Error fetching data: ' . $e->getMessage());
     //         return response()->json(['error' => 'Error fetching data'], 500);
     //     }
     // }
-
-    public function errorSensorData(): JsonResponse
+    public function latestSensorData(): JsonResponse
     {
-        return response()->json([
-            'temperature' => 'Sensor Error',
-            'humidity' => 'Sensor Error',
-                'updated_at'  => now(),
+        try {
+            $sensor_data = GardenSensor::latest()->first();
+            $soil_data = SoilSensor::latest()->first();
+
+            // Hitung rata-rata kelembapan tanah dari soil_1 s/d soil_9
+            $average_soil = 'N/A';
+            if ($soil_data) {
+                $soil_values = [
+                    $soil_data->soil_1,
+                    $soil_data->soil_2,
+                    $soil_data->soil_3,
+                    $soil_data->soil_4,
+                    $soil_data->soil_5,
+                    $soil_data->soil_6,
+                    $soil_data->soil_7,
+                    $soil_data->soil_8,
+                    $soil_data->soil_9,
+                ];
+
+                // Filter nilai yang tidak null/empty lalu hitung rata-ratanya
+                $valid_soils = array_filter($soil_values, function($val) {
+                    return !is_null($val) && $val !== '';
+                });
+
+                if (count($valid_soils) > 0) {
+                    $average_soil = round(array_sum($valid_soils) / count($valid_soils), 2);
+                }
+            }
+
+            return response()->json([
+                'temperature' => $sensor_data->garden_temp ?? 'N/A',
+                'humidity'    => $sensor_data->garden_humi ?? 'N/A',
+                'light'       => $sensor_data->garden_lumi ?? 'N/A',
+                'soil'        => $average_soil,
+                'rain'        => $sensor_data->garden_rain ?? 'N/A',
+                'updated_at'  => $sensor_data->created_at ?? now(),
             ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching latest sensor data: ' . $e->getMessage());
+            return response()->json(['error' => 'Error fetching data'], 500);
         }
     }
 

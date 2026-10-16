@@ -22,7 +22,7 @@ return new class extends Migration
             $table->decimal('soil_7', 5, 2)->nullable();
             $table->decimal('soil_8', 5, 2)->nullable();
             $table->decimal('soil_9', 5, 2)->nullable();
-            $table->integer('device_id')->nullable();
+            $table->string('device_id')->nullable();
             $table->timestamps();
         });
     }

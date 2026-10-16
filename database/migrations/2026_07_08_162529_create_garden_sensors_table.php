@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('garden_humi', 5, 2)->nullable();
             $table->decimal('garden_lumi', 5, 2)->nullable();
             $table->decimal('garden_rain', 5, 2)->nullable();
-            $table->integer('device_id')->nullable();
+            $table->string('device_id')->nullable();
             $table->timestamps();
         });
     }

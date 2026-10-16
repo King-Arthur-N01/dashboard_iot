@@ -32,7 +32,7 @@ class RelayDataController extends Controller
             ];
 
             MQTT::publish(
-                'farm/tank/1/cmd',
+                'farm/relay/1/cmd',
                 json_encode($payload),
                 0
             );

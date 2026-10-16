@@ -1,18 +1,21 @@
 <form method="POST" action="{{ route('login') }}">
 @csrf
-    <div class="form-row">
-        <div class="col-md-6">
-            <div class="position-relative form-group"><label for="exampleNik" class="">NIK</label><input name="nik" id="nik" placeholder="NIK" type="number" class="form-control"></div>
-        </div>
-        <div class="col-md-6">
-            <div class="position-relative form-group"><label for="examplePassword" class="">Password</label><input name="password" id="password" placeholder="Password" type="password"class="form-control"></div>
-        </div>
+    <div class="form-group mb-3">
+        <label for="nik">NIK</label>
+        <input name="nik" id="nik" placeholder="Masukkan NIK Anda" type="number" inputmode="numeric" pattern="[0-9]*" class="form-control">
     </div>
-    <div class="position-relative form-check"><input name="check" id="exampleCheck" type="checkbox" class="form-check-input"><label for="exampleCheck" class="form-check-label">Keep me logged in</label></div>
+    <div class="form-group mb-3">
+        <label for="password">Password</label>
+        <input name="password" id="password" placeholder="Masukkan Password" type="password" class="form-control">
+    </div>
+    <div class="position-relative form-check mb-2">
+        <input name="check" id="exampleCheck" type="checkbox" class="form-check-input">
+        <label for="exampleCheck" class="form-check-label">Keep me logged in</label>
+    </div>
     <div class="divider row"></div>
-    <div class="d-flex align-items-center">
-        <div class="ml-auto"><a href="javascript:void(0);" class="btn-lg btn btn-link">Recover Password</a>
-            <button class="btn btn-primary btn-lg">Login to Dashboard</button>
-        </div>
+    <div class="d-flex align-items-center justify-content-between">
+        <a href="javascript:void(0);" class="btn btn-link p-0">Recover Password</a>
+        <button type="submit" class="btn btn-primary btn-lg">Login to Dashboard</button>
     </div>
 </form>
+

@@ -11,12 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::table('schedule_data', function (Blueprint $table){
-            $table->foreignId('garden_id')->identity('1,1')->references('id')->on('garden_data')->onDelete('cascade')->default(null)->nullable();
-        });
+        // Schema::table('schedule_data', function (Blueprint $table){
+        //     $table->foreignId('garden_id')->identity('1,1')->references('id')->on('garden_data')->onDelete('cascade')->default(null)->nullable();
+        // });
         // Schema::table('relay_data', function (Blueprint $table){
         //     $table->foreignId('schedule_id')->identity('1,1')->references('id')->on('schedule_data')->onDelete('cascade')->default(null)->nullable();
         // });
+        Schema::table('garden_logs', function (Blueprint $table){
+            $table->foreignId('schedule_id')->identity('1,1')->references('id')->on('schedule_data')->onDelete('cascade')->default(null)->nullable();
+        });
     }
 
     /**

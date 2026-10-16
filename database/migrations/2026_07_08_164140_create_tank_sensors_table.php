@@ -17,7 +17,7 @@ return new class extends Migration
             $table->decimal('tank_humi', 5, 2)->nullable();
             $table->decimal('tank_vol', 5, 2)->nullable();
             $table->integer('tank_stat')->nullable();
-            $table->integer('device_id')->nullable();
+            $table->string('device_id')->nullable();
             $table->timestamps();
         });
     }
